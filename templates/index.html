@@ -12,41 +12,563 @@
         }
 
         body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #f5f5f7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(29, 29, 31, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            height: 48px;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+        }
+
+        .nav-content {
+            max-width: 1024px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+        }
+
+        .nav-logo {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f5f5f7;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #a1a1a6;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #f5f5f7;
+        }
+
+        /* Hero Section */
+        .hero {
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #fff;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 50px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            padding: 120px 24px 80px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .date {
-            font-size: 2.5rem;
-            font-weight: 700;
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(94, 92, 230, 0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .hero-overline {
+            font-size: 17px;
+            font-weight: 400;
+            color: #a1a1a6;
             margin-bottom: 12px;
+            letter-spacing: -0.01em;
         }
 
-        .time {
-            font-size: 4rem;
+        .hero-title {
+            font-size: 80px;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #f5f5f7 0%, #a1a1a6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-date {
+            font-size: 28px;
+            font-weight: 600;
+            color: #f5f5f7;
+            letter-spacing: -0.02em;
+            margin-bottom: 40px;
+        }
+
+        .hero-time {
+            font-size: 96px;
+            font-weight: 200;
+            letter-spacing: -0.02em;
+            line-height: 1;
+            margin-bottom: 24px;
+            font-variant-numeric: tabular-nums;
+            color: #f5f5f7;
+        }
+
+        .hero-seconds {
+            font-size: 48px;
+            font-weight: 200;
+            color: #86868b;
+            vertical-align: super;
+        }
+
+        .hero-subtitle {
+            font-size: 21px;
+            font-weight: 400;
+            color: #86868b;
+            max-width: 600px;
+            line-height: 1.4;
+            letter-spacing: -0.01em;
+            margin-bottom: 40px;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .cta-primary {
+            display: inline-block;
+            padding: 12px 28px;
+            background: #2997ff;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 400;
+            text-decoration: none;
+            border-radius: 980px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .cta-primary:hover {
+            background: #0077ed;
+        }
+
+        .cta-secondary {
+            font-size: 21px;
+            color: #2997ff;
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        .cta-secondary:hover {
+            text-decoration: underline;
+        }
+
+        .cta-secondary::after {
+            content: ' >';
+        }
+
+        /* Feature Cards Section */
+        .features {
+            padding: 0 12px 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: #1d1d1f;
+            border-radius: 24px;
+            padding: 56px 48px;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .feature-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .feature-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #86868b;
+            margin-bottom: 8px;
+        }
+
+        .feature-title {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 12px;
+            color: #f5f5f7;
+        }
+
+        .feature-title .gradient-blue {
+            background: linear-gradient(90deg, #2997ff, #5ac8fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-title .gradient-purple {
+            background: linear-gradient(90deg, #bf5af2, #da7dff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-title .gradient-orange {
+            background: linear-gradient(90deg, #ff9f0a, #ffb340);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-desc {
+            font-size: 17px;
+            color: #86868b;
+            line-height: 1.5;
+            max-width: 500px;
+            margin: 0 auto 24px;
+        }
+
+        .feature-link {
+            font-size: 17px;
+            color: #2997ff;
+            text-decoration: none;
+        }
+
+        .feature-link:hover {
+            text-decoration: underline;
+        }
+
+        .feature-link::after {
+            content: ' >';
+        }
+
+        .feature-visual {
+            margin-top: 32px;
+            font-size: 64px;
+            line-height: 1;
+        }
+
+        /* Timezone Grid */
+        .tz-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            margin-top: 32px;
+            background: #2d2d2f;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .tz-item {
+            background: #1d1d1f;
+            padding: 24px 16px;
+            text-align: center;
+        }
+
+        .tz-city {
+            font-size: 14px;
+            color: #86868b;
+            margin-bottom: 4px;
+        }
+
+        .tz-time {
+            font-size: 24px;
             font-weight: 300;
-            letter-spacing: 4px;
+            color: #f5f5f7;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Footer */
+        footer {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 24px 22px 48px;
+            border-top: 1px solid #424245;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: #6e6e73;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            margin-top: 12px;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            font-size: 12px;
+            color: #6e6e73;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: #f5f5f7;
+        }
+
+        /* Live Clock Animation */
+        .pulse-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #30d158;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .delay-2 { animation-delay: 0.3s; opacity: 0; }
+        .delay-3 { animation-delay: 0.5s; opacity: 0; }
+        .delay-4 { animation-delay: 0.7s; opacity: 0; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 48px;
+            }
+
+            .hero-time {
+                font-size: 56px;
+            }
+
+            .hero-seconds {
+                font-size: 28px;
+            }
+
+            .hero-date {
+                font-size: 21px;
+            }
+
+            .hero-subtitle {
+                font-size: 17px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-title {
+                font-size: 28px;
+            }
+
+            .tz-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .cta-group {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="date">{{ now.strftime('%Y년 %m월 %d일') }}</div>
-        <div class="time">{{ now.strftime('%H:%M:%S') }}</div>
-    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-content">
+            <div class="nav-logo">TimeCheck</div>
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#world">World Clock</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <p class="hero-overline animate-in delay-1"><span class="pulse-dot"></span>Live</p>
+        <h1 class="hero-title animate-in delay-2">{{ now.strftime('%H:%M') }}</h1>
+        <p class="hero-date animate-in delay-3">{{ now.strftime('%Y년 %m월 %d일 %A') }}</p>
+        <p class="hero-subtitle animate-in delay-4">정확한 시간, 아름다운 디자인. 당신의 하루를 한눈에 확인하세요.</p>
+        <div class="cta-group animate-in delay-4">
+            <button class="cta-primary" onclick="location.reload()">새로고침</button>
+            <a href="#features" class="cta-secondary">더 알아보기</a>
+        </div>
+    </section>
+
+    <!-- Feature Cards -->
+    <section class="features" id="features">
+        <div class="feature-card full-width">
+            <p class="feature-label">현재 시각</p>
+            <h2 class="feature-title">
+                <span class="gradient-blue" id="live-time">{{ now.strftime('%H:%M:%S') }}</span>
+            </h2>
+            <p class="feature-desc">실시간으로 업데이트되는 정확한 시간을 확인하세요.</p>
+        </div>
+
+        <div class="feature-card">
+            <p class="feature-label">오늘의 날짜</p>
+            <h2 class="feature-title"><span class="gradient-purple">{{ now.strftime('%m월 %d일') }}</span></h2>
+            <p class="feature-desc">{{ now.strftime('%Y년의 %j번째 날') }}</p>
+            <div class="feature-visual">{{ now.strftime('%d') }}</div>
+        </div>
+
+        <div class="feature-card">
+            <p class="feature-label">요일</p>
+            <h2 class="feature-title"><span class="gradient-orange">{{ now.strftime('%A') }}</span></h2>
+            <p class="feature-desc">오늘 하루도 좋은 하루 되세요.</p>
+            <div class="feature-visual">
+                {% set weekday = now.weekday() %}
+                {% if weekday == 0 %}月{% elif weekday == 1 %}火{% elif weekday == 2 %}水{% elif weekday == 3 %}木{% elif weekday == 4 %}金{% elif weekday == 5 %}土{% else %}日{% endif %}
+            </div>
+        </div>
+
+        <div class="feature-card full-width" id="world">
+            <p class="feature-label">세계 시각</p>
+            <h2 class="feature-title">전 세계의 시간을 <span class="gradient-blue">한눈에.</span></h2>
+            <p class="feature-desc">주요 도시의 현재 시각입니다.</p>
+            <div class="tz-grid" id="tz-grid">
+                <div class="tz-item">
+                    <div class="tz-city">서울</div>
+                    <div class="tz-time" id="tz-seoul">--:--</div>
+                </div>
+                <div class="tz-item">
+                    <div class="tz-city">뉴욕</div>
+                    <div class="tz-time" id="tz-ny">--:--</div>
+                </div>
+                <div class="tz-item">
+                    <div class="tz-city">런던</div>
+                    <div class="tz-time" id="tz-london">--:--</div>
+                </div>
+                <div class="tz-item">
+                    <div class="tz-city">도쿄</div>
+                    <div class="tz-time" id="tz-tokyo">--:--</div>
+                </div>
+                <div class="tz-item">
+                    <div class="tz-city">파리</div>
+                    <div class="tz-time" id="tz-paris">--:--</div>
+                </div>
+                <div class="tz-item">
+                    <div class="tz-city">시드니</div>
+                    <div class="tz-time" id="tz-sydney">--:--</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">
+            Flask 기반 웹 애플리케이션. 서버에서 렌더링된 시각 정보를 표시합니다.
+        </p>
+        <div class="footer-links">
+            <a href="#">개인정보 처리방침</a>
+            <a href="#">이용 약관</a>
+            <a href="#">사이트맵</a>
+        </div>
+    </footer>
+
+    <script>
+        // Live clock update
+        function updateClock() {
+            const now = new Date();
+            const pad = n => String(n).padStart(2, '0');
+            const timeStr = pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+            const el = document.getElementById('live-time');
+            if (el) el.textContent = timeStr;
+        }
+
+        // World clock
+        function updateWorldClock() {
+            const zones = {
+                'tz-seoul': 'Asia/Seoul',
+                'tz-ny': 'America/New_York',
+                'tz-london': 'Europe/London',
+                'tz-tokyo': 'Asia/Tokyo',
+                'tz-paris': 'Europe/Paris',
+                'tz-sydney': 'Australia/Sydney'
+            };
+
+            for (const [id, tz] of Object.entries(zones)) {
+                const el = document.getElementById(id);
+                if (el) {
+                    const time = new Date().toLocaleTimeString('ko-KR', {
+                        timeZone: tz,
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false
+                    });
+                    el.textContent = time;
+                }
+            }
+        }
+
+        updateClock();
+        updateWorldClock();
+        setInterval(updateClock, 1000);
+        setInterval(updateWorldClock, 1000);
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>
