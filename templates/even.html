@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이븐회사</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #f5f5f7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(29, 29, 31, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-content {
+            max-width: 1024px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+        }
+
+        /* Hamburger Button */
+        .hamburger {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 6px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            position: relative;
+            z-index: 200;
+        }
+
+        .hamburger:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .hamburger .bar {
+            width: 18px;
+            height: 1.5px;
+            background: #f5f5f7;
+            border-radius: 2px;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .hamburger.open .bar:nth-child(1) {
+            transform: translateY(6.5px) rotate(45deg);
+        }
+
+        .hamburger.open .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.open .bar:nth-child(3) {
+            transform: translateY(-6.5px) rotate(-45deg);
+        }
+
+        .nav-page-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #f5f5f7;
+            letter-spacing: -0.01em;
+        }
+
+        /* Dropdown Menu */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 90;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .menu-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .dropdown-menu {
+            position: fixed;
+            top: 48px;
+            left: 0;
+            right: 0;
+            z-index: 95;
+            background: rgba(29, 29, 31, 0.96);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(66, 66, 69, 0.6);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .dropdown-menu.open {
+            max-height: 400px;
+        }
+
+        .dropdown-content {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 20px 22px 28px;
+        }
+
+        .dropdown-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #6e6e73;
+            margin-bottom: 16px;
+        }
+
+        .dropdown-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .dropdown-links a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            color: #f5f5f7;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 400;
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+
+        .dropdown-links a:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .dropdown-links a.active {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .dropdown-links .link-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            color: #fff;
+        }
+
+        .dropdown-links .link-icon.time-icon {
+            background: linear-gradient(135deg, #5e5ce6, #bf5af2);
+        }
+
+        .dropdown-links .link-icon.stock-icon {
+            background: linear-gradient(135deg, #30d158, #5ac8fa);
+        }
+
+        .dropdown-links .link-icon.even-icon {
+            background: linear-gradient(135deg, #ff9f0a, #ff375f);
+        }
+
+        .dropdown-links .link-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .dropdown-links .link-name {
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        .dropdown-links .link-desc {
+            font-size: 12px;
+            color: #86868b;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 24px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 159, 10, 0.12) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .hero-overline {
+            font-size: 17px;
+            font-weight: 400;
+            color: #a1a1a6;
+            margin-bottom: 12px;
+        }
+
+        .hero-title {
+            font-size: 64px;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ff9f0a 0%, #ff375f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 21px;
+            font-weight: 400;
+            color: #86868b;
+            max-width: 500px;
+            line-height: 1.4;
+            margin-bottom: 24px;
+        }
+
+        .hero-symbol {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(255, 159, 10, 0.1);
+            border: 1px solid rgba(255, 159, 10, 0.2);
+            border-radius: 980px;
+            font-size: 14px;
+            color: #ff9f0a;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        /* Main Price Card */
+        .price-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 12px 12px;
+        }
+
+        .price-card {
+            background: #1d1d1f;
+            border-radius: 24px;
+            padding: 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .price-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #86868b;
+            margin-bottom: 8px;
+        }
+
+        .price-value {
+            font-size: 72px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: #f5f5f7;
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 12px;
+            transition: color 0.3s;
+        }
+
+        .price-change-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .price-change {
+            font-size: 24px;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            transition: color 0.3s;
+        }
+
+        .price-pct {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .price-pct.up {
+            background: rgba(48, 209, 88, 0.15);
+            color: #30d158;
+        }
+
+        .price-pct.down {
+            background: rgba(255, 69, 58, 0.15);
+            color: #ff453a;
+        }
+
+        .price-time {
+            font-size: 13px;
+            color: #6e6e73;
+            margin-top: 8px;
+        }
+
+        .up { color: #30d158; }
+        .down { color: #ff453a; }
+
+        /* Countdown */
+        .countdown {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .countdown-label {
+            font-size: 13px;
+            color: #6e6e73;
+        }
+
+        .countdown-bar {
+            width: 120px;
+            height: 4px;
+            background: #2d2d2f;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .countdown-fill {
+            height: 100%;
+            background: #ff9f0a;
+            border-radius: 2px;
+            transition: width 1s linear;
+        }
+
+        .countdown-sec {
+            font-size: 13px;
+            color: #86868b;
+            font-variant-numeric: tabular-nums;
+            min-width: 28px;
+        }
+
+        /* Chart */
+        .chart-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 12px 12px;
+        }
+
+        .chart-card {
+            background: #1d1d1f;
+            border-radius: 24px;
+            padding: 32px;
+        }
+
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .chart-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f5f5f7;
+        }
+
+        .chart-count {
+            font-size: 13px;
+            color: #6e6e73;
+        }
+
+        .chart-area {
+            width: 100%;
+            height: 200px;
+            position: relative;
+        }
+
+        .chart-area svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .chart-y-labels {
+            position: absolute;
+            top: 0;
+            right: 8px;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .chart-y-label {
+            font-size: 11px;
+            color: #6e6e73;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Stats Grid */
+        .stats-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 12px 12px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: #1d1d1f;
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #86868b;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #f5f5f7;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* History Table */
+        .history-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 12px 12px;
+        }
+
+        .section-header {
+            padding: 48px 12px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #86868b;
+            margin-bottom: 4px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: #f5f5f7;
+        }
+
+        .history-table {
+            background: #1d1d1f;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .history-row {
+            display: grid;
+            grid-template-columns: 0.8fr 1fr 1fr 1fr;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(66, 66, 69, 0.4);
+        }
+
+        .history-row:last-child {
+            border-bottom: none;
+        }
+
+        .history-row.header {
+            border-bottom: 1px solid #424245;
+        }
+
+        .history-row.header span {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #6e6e73;
+        }
+
+        .history-time {
+            font-size: 14px;
+            color: #86868b;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .history-price {
+            font-size: 15px;
+            font-weight: 500;
+            color: #f5f5f7;
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+        }
+
+        .history-change {
+            font-size: 14px;
+            font-weight: 500;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .history-pct {
+            text-align: right;
+        }
+
+        .history-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .history-badge.up {
+            background: rgba(48, 209, 88, 0.15);
+            color: #30d158;
+        }
+
+        .history-badge.down {
+            background: rgba(255, 69, 58, 0.15);
+            color: #ff453a;
+        }
+
+        .no-history {
+            text-align: center;
+            padding: 32px;
+            color: #6e6e73;
+            font-size: 15px;
+        }
+
+        /* Footer */
+        footer {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 24px 22px 48px;
+            border-top: 1px solid #424245;
+            margin-top: 48px;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: #6e6e73;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            margin-top: 12px;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            font-size: 12px;
+            color: #6e6e73;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: #f5f5f7;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .delay-3 { animation-delay: 0.3s; opacity: 0; }
+
+        @keyframes flash-green {
+            0% { background: rgba(48, 209, 88, 0.2); }
+            100% { background: transparent; }
+        }
+
+        @keyframes flash-red {
+            0% { background: rgba(255, 69, 58, 0.2); }
+            100% { background: transparent; }
+        }
+
+        .flash-up {
+            animation: flash-green 0.8s ease-out;
+        }
+
+        .flash-down {
+            animation: flash-red 0.8s ease-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 40px;
+            }
+
+            .hero-subtitle {
+                font-size: 17px;
+            }
+
+            .price-value {
+                font-size: 48px;
+            }
+
+            .price-change {
+                font-size: 18px;
+            }
+
+            .price-pct {
+                font-size: 16px;
+            }
+
+            .price-card {
+                padding: 32px 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .history-row {
+                grid-template-columns: 0.8fr 1fr 1fr;
+                padding: 14px 16px;
+            }
+
+            .history-row .history-change {
+                display: none;
+            }
+
+            .history-row.header span:nth-child(3) {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-content">
+            <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <span class="nav-page-title">이븐회사</span>
+        </div>
+    </nav>
+
+    <!-- Dropdown Menu -->
+    <div class="dropdown-menu" id="dropdown-menu">
+        <div class="dropdown-content">
+            <p class="dropdown-label">Pages</p>
+            <ul class="dropdown-links">
+                <li>
+                    <a href="/">
+                        <span class="link-icon time-icon">T</span>
+                        <span class="link-info">
+                            <span class="link-name">EvenTime</span>
+                            <span class="link-desc">실시간 시계 & 세계 시각</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/stock">
+                        <span class="link-icon stock-icon">S</span>
+                        <span class="link-info">
+                            <span class="link-name">EvenStock</span>
+                            <span class="link-desc">주식 시장 대시보드</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/even" class="active">
+                        <span class="link-icon even-icon">E</span>
+                        <span class="link-info">
+                            <span class="link-name">이븐회사</span>
+                            <span class="link-desc">가상 주식 시뮬레이션</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <p class="hero-overline animate-in delay-1">Virtual Stock</p>
+        <h1 class="hero-title animate-in delay-2">이븐회사</h1>
+        <p class="hero-subtitle animate-in delay-3">가상의 주식 가격이 1분마다 실시간으로 변동됩니다.</p>
+        <div class="hero-symbol animate-in delay-3">EVEN &middot; 이븐증권거래소</div>
+    </section>
+
+    <!-- Main Price -->
+    <div class="price-section">
+        <div class="price-card" id="price-card">
+            <p class="price-label">현재 주가</p>
+            <div class="price-value" id="price-value">50,000</div>
+            <div class="price-change-row">
+                <span class="price-change" id="price-change">0</span>
+                <span class="price-pct up" id="price-pct">0.00%</span>
+            </div>
+            <p class="price-time" id="price-time">시작가 기준</p>
+            <div class="countdown">
+                <span class="countdown-label">다음 변동까지</span>
+                <div class="countdown-bar">
+                    <div class="countdown-fill" id="countdown-fill" style="width:100%"></div>
+                </div>
+                <span class="countdown-sec" id="countdown-sec">60s</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-section" style="margin-top:12px;">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">시작가</div>
+                <div class="stat-value" id="stat-open">50,000</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">최고가</div>
+                <div class="stat-value up" id="stat-high">50,000</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">최저가</div>
+                <div class="stat-value down" id="stat-low">50,000</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">변동 횟수</div>
+                <div class="stat-value" id="stat-count">0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="section-header">
+        <p class="section-label">차트</p>
+        <p class="section-title">가격 추이</p>
+    </div>
+    <div class="chart-section">
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">EVEN</span>
+                <span class="chart-count" id="chart-count">데이터 대기 중...</span>
+            </div>
+            <div class="chart-area">
+                <svg id="chart-svg" viewBox="0 0 800 200" preserveAspectRatio="none"></svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- History -->
+    <div class="section-header">
+        <p class="section-label">기록</p>
+        <p class="section-title">변동 내역</p>
+    </div>
+    <div class="history-section">
+        <div class="history-table" id="history-table">
+            <div class="history-row header">
+                <span>시각</span>
+                <span style="text-align:right">가격</span>
+                <span style="text-align:right">변동</span>
+                <span style="text-align:right">등락률</span>
+            </div>
+            <div class="no-history" id="no-history">아직 변동 내역이 없습니다. 1분 후 첫 변동이 발생합니다.</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">
+            이븐회사 — 가상 주식 시뮬레이션. 실제 투자와 무관하며, 교육 및 엔터테인먼트 목적입니다.
+        </p>
+        <div class="footer-links">
+            <a href="/">EvenTime</a>
+            <a href="/stock">EvenStock</a>
+            <a href="/even">이븐회사</a>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger menu toggle
+        function toggleMenu() {
+            document.getElementById('hamburger').classList.toggle('open');
+            document.getElementById('dropdown-menu').classList.toggle('open');
+            document.getElementById('menu-overlay').classList.toggle('open');
+        }
+
+        // Virtual Stock Simulation
+        const INITIAL_PRICE = 50000;
+        let currentPrice = INITIAL_PRICE;
+        let highPrice = INITIAL_PRICE;
+        let lowPrice = INITIAL_PRICE;
+        let changeCount = 0;
+        let priceHistory = [INITIAL_PRICE];
+        let countdown = 60;
+
+        function formatNumber(n) {
+            return Math.round(n).toLocaleString('ko-KR');
+        }
+
+        function updatePrice() {
+            const prevPrice = currentPrice;
+
+            // Random change: -5% ~ +5%
+            const changePct = (Math.random() - 0.5) * 10;
+            const changeAmount = currentPrice * (changePct / 100);
+            currentPrice = Math.max(100, currentPrice + changeAmount);
+
+            const actualChange = currentPrice - prevPrice;
+            const actualPct = (actualChange / prevPrice) * 100;
+            const totalChange = currentPrice - INITIAL_PRICE;
+            const totalPct = (totalChange / INITIAL_PRICE) * 100;
+            const direction = totalChange >= 0 ? 'up' : 'down';
+
+            // Update high / low
+            if (currentPrice > highPrice) highPrice = currentPrice;
+            if (currentPrice < lowPrice) lowPrice = currentPrice;
+            changeCount++;
+
+            priceHistory.push(currentPrice);
+
+            // Update DOM
+            const priceEl = document.getElementById('price-value');
+            priceEl.textContent = formatNumber(currentPrice);
+
+            const changeEl = document.getElementById('price-change');
+            changeEl.textContent = (totalChange >= 0 ? '▲ ' : '▼ ') + formatNumber(Math.abs(totalChange));
+            changeEl.className = 'price-change ' + direction;
+
+            const pctEl = document.getElementById('price-pct');
+            pctEl.textContent = (totalPct >= 0 ? '+' : '') + totalPct.toFixed(2) + '%';
+            pctEl.className = 'price-pct ' + direction;
+
+            const now = new Date();
+            document.getElementById('price-time').textContent =
+                now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) + ' 기준';
+
+            document.getElementById('stat-high').textContent = formatNumber(highPrice);
+            document.getElementById('stat-low').textContent = formatNumber(lowPrice);
+            document.getElementById('stat-count').textContent = changeCount;
+
+            // Flash effect
+            const card = document.getElementById('price-card');
+            card.classList.remove('flash-up', 'flash-down');
+            void card.offsetWidth;
+            card.classList.add(actualChange >= 0 ? 'flash-up' : 'flash-down');
+
+            // Add history row
+            addHistoryRow(now, currentPrice, actualChange, actualPct);
+
+            // Update chart
+            drawChart();
+
+            // Reset countdown
+            countdown = 60;
+        }
+
+        function addHistoryRow(time, price, change, pct) {
+            const noHistory = document.getElementById('no-history');
+            if (noHistory) noHistory.remove();
+
+            const table = document.getElementById('history-table');
+            const header = table.querySelector('.header');
+
+            const dir = change >= 0 ? 'up' : 'down';
+            const arrow = change >= 0 ? '▲' : '▼';
+            const sign = pct >= 0 ? '+' : '';
+
+            const row = document.createElement('div');
+            row.className = 'history-row';
+            row.innerHTML =
+                '<span class="history-time">' + time.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) + '</span>' +
+                '<span class="history-price">' + formatNumber(price) + '</span>' +
+                '<span class="history-change ' + dir + '">' + arrow + ' ' + formatNumber(Math.abs(change)) + '</span>' +
+                '<span class="history-pct"><span class="history-badge ' + dir + '">' + sign + pct.toFixed(2) + '%</span></span>';
+
+            header.insertAdjacentElement('afterend', row);
+        }
+
+        function drawChart() {
+            const svg = document.getElementById('chart-svg');
+            const data = priceHistory;
+            const len = data.length;
+
+            if (len < 2) {
+                document.getElementById('chart-count').textContent = '데이터 대기 중...';
+                return;
+            }
+
+            document.getElementById('chart-count').textContent = len + '개 데이터';
+
+            const min = Math.min(...data) * 0.998;
+            const max = Math.max(...data) * 1.002;
+            const range = max - min || 1;
+
+            const w = 800;
+            const h = 200;
+            const pad = 4;
+
+            let points = '';
+            let areaPoints = '';
+
+            for (let i = 0; i < len; i++) {
+                const x = (i / (len - 1)) * w;
+                const y = pad + ((max - data[i]) / range) * (h - pad * 2);
+                points += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1) + ' ';
+                areaPoints += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1) + ' ';
+            }
+
+            areaPoints += 'L' + w + ',' + h + ' L0,' + h + ' Z';
+
+            const lastPrice = data[len - 1];
+            const isUp = lastPrice >= INITIAL_PRICE;
+            const color = isUp ? '#30d158' : '#ff453a';
+
+            svg.innerHTML =
+                '<defs>' +
+                    '<linearGradient id="g-fill" x1="0" y1="0" x2="0" y2="1">' +
+                        '<stop offset="0%" stop-color="' + color + '" stop-opacity="0.25"/>' +
+                        '<stop offset="100%" stop-color="' + color + '" stop-opacity="0"/>' +
+                    '</linearGradient>' +
+                '</defs>' +
+                '<path d="' + areaPoints + '" fill="url(#g-fill)"/>' +
+                '<path d="' + points + '" fill="none" stroke="' + color + '" stroke-width="2"/>' +
+                '<line x1="0" y1="' + (pad + ((max - INITIAL_PRICE) / range) * (h - pad * 2)).toFixed(1) + '" x2="' + w + '" y2="' + (pad + ((max - INITIAL_PRICE) / range) * (h - pad * 2)).toFixed(1) + '" stroke="#6e6e73" stroke-width="1" stroke-dasharray="4,4"/>';
+        }
+
+        // Countdown timer
+        function tickCountdown() {
+            countdown--;
+            if (countdown <= 0) {
+                updatePrice();
+            }
+
+            const fill = document.getElementById('countdown-fill');
+            const sec = document.getElementById('countdown-sec');
+
+            fill.style.width = ((countdown / 60) * 100) + '%';
+            sec.textContent = countdown + 's';
+        }
+
+        // Init
+        drawChart();
+        setInterval(tickCountdown, 1000);
+    </script>
+
+</body>
+</html>

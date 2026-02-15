@@ -32,5 +32,10 @@ def stock():
     return render_template("stock.html", indices=indices, stocks=stocks)
 
 
+@app.route("/even")
+def even():
+    return render_template("even.html")
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
