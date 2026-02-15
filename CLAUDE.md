@@ -5,7 +5,7 @@ This file provides guidance for AI assistants (including Claude) working in this
 ## Repository Overview
 
 - **Repository**: ChangHwan-AD/test
-- **Description**: Flask 기반 웹 애플리케이션 — 오늘 날짜와 시간을 표시하는 단일 페이지 앱.
+- **Description**: Flask 기반 웹 애플리케이션 — EvenTime(시간 표시)과 EvenStock(주식 대시보드) 두 페이지 앱.
 - **Language**: Python
 - **Framework**: Flask
 - **Deployment**: Render (free tier)
@@ -16,7 +16,8 @@ This file provides guidance for AI assistants (including Claude) working in this
 /
 ├── app.py                 # Flask 애플리케이션 엔트리포인트
 ├── templates/
-│   └── index.html         # 메인 페이지 템플릿 (Jinja2)
+│   ├── index.html         # EvenTime 페이지 템플릿 (Jinja2)
+│   └── stock.html         # EvenStock 페이지 템플릿 (Jinja2)
 ├── requirements.txt       # Python 의존성 (flask, gunicorn)
 ├── render.yaml            # Render 배포 설정 (Blueprint)
 ├── CLAUDE.md              # AI 어시스턴트 가이드 (이 파일)
@@ -64,6 +65,7 @@ Render (https://render.com) 무료 플랜으로 배포합니다.
 
 ## Architecture
 
-- **app.py**: Flask 앱 인스턴스 생성, 라우트 정의, `datetime.now()`로 현재 시각을 가져와 템플릿에 전달.
-- **templates/index.html**: Jinja2 템플릿. 서버에서 전달받은 `now` 객체를 `strftime`으로 포매팅하여 날짜와 시간 표시.
+- **app.py**: Flask 앱 인스턴스 생성, 라우트 정의 (`/` → EvenTime, `/stock` → EvenStock).
+- **templates/index.html**: EvenTime 페이지. `datetime.now()`를 `strftime`으로 포매팅하여 날짜와 시간 표시.
+- **templates/stock.html**: EvenStock 페이지. 주요 주가지수 및 종목 정보를 대시보드 형태로 표시.
 - **render.yaml**: Render Blueprint. Python 런타임, 빌드/시작 커맨드, 무료 플랜 설정 정의.

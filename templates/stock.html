@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EvenStock</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #f5f5f7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(29, 29, 31, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-content {
+            max-width: 1024px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+        }
+
+        .nav-logo {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f5f5f7;
+            letter-spacing: -0.02em;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #a1a1a6;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #f5f5f7;
+        }
+
+        .nav-links a.active {
+            color: #f5f5f7;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 580px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 24px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(48, 209, 88, 0.12) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .hero-overline {
+            font-size: 17px;
+            font-weight: 400;
+            color: #a1a1a6;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .hero-title {
+            font-size: 72px;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #30d158 0%, #5ac8fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 21px;
+            font-weight: 400;
+            color: #86868b;
+            max-width: 600px;
+            line-height: 1.4;
+            letter-spacing: -0.01em;
+            margin-bottom: 32px;
+        }
+
+        .market-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(48, 209, 88, 0.1);
+            border: 1px solid rgba(48, 209, 88, 0.2);
+            border-radius: 980px;
+            font-size: 14px;
+            color: #86868b;
+        }
+
+        .market-status .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .market-status .dot.open {
+            background: #30d158;
+        }
+
+        .market-status .dot.closed {
+            background: #ff453a;
+        }
+
+        .market-status .status-text {
+            font-weight: 500;
+        }
+
+        /* Index Overview */
+        .index-strip {
+            padding: 0 12px;
+            max-width: 1200px;
+            margin: 0 auto 12px;
+        }
+
+        .index-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .index-card {
+            background: #1d1d1f;
+            border-radius: 20px;
+            padding: 28px 24px;
+            transition: transform 0.3s;
+        }
+
+        .index-card:hover {
+            transform: scale(1.02);
+        }
+
+        .index-name {
+            font-size: 14px;
+            color: #86868b;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .index-price {
+            font-size: 32px;
+            font-weight: 600;
+            color: #f5f5f7;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .index-change {
+            font-size: 15px;
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .index-change.up {
+            color: #30d158;
+        }
+
+        .index-change.down {
+            color: #ff453a;
+        }
+
+        .index-change .arrow {
+            font-size: 12px;
+            margin-right: 2px;
+        }
+
+        /* Stock Cards Section */
+        .section-header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 24px 24px;
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #86868b;
+            margin-bottom: 4px;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: #f5f5f7;
+        }
+
+        .stocks {
+            padding: 0 12px 12px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stock-table {
+            background: #1d1d1f;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .stock-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            align-items: center;
+            padding: 20px 28px;
+            border-bottom: 1px solid rgba(66, 66, 69, 0.4);
+            transition: background 0.2s;
+        }
+
+        .stock-row:last-child {
+            border-bottom: none;
+        }
+
+        .stock-row:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .stock-row.header {
+            padding: 16px 28px;
+            border-bottom: 1px solid #424245;
+        }
+
+        .stock-row.header span {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #6e6e73;
+        }
+
+        .stock-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .stock-symbol {
+            font-size: 17px;
+            font-weight: 600;
+            color: #f5f5f7;
+        }
+
+        .stock-name {
+            font-size: 13px;
+            color: #6e6e73;
+        }
+
+        .stock-price {
+            font-size: 17px;
+            font-weight: 500;
+            color: #f5f5f7;
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+        }
+
+        .stock-change-val {
+            font-size: 15px;
+            font-weight: 500;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .stock-change-pct {
+            text-align: right;
+        }
+
+        .stock-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .stock-badge.up {
+            background: rgba(48, 209, 88, 0.15);
+            color: #30d158;
+        }
+
+        .stock-badge.down {
+            background: rgba(255, 69, 58, 0.15);
+            color: #ff453a;
+        }
+
+        .up { color: #30d158; }
+        .down { color: #ff453a; }
+
+        /* Chart Placeholder Cards */
+        .charts {
+            padding: 0 12px 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .chart-card {
+            background: #1d1d1f;
+            border-radius: 24px;
+            padding: 32px;
+            overflow: hidden;
+        }
+
+        .chart-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .chart-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #86868b;
+            margin-bottom: 4px;
+        }
+
+        .chart-title {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #f5f5f7;
+            margin-bottom: 4px;
+        }
+
+        .chart-subtitle {
+            font-size: 15px;
+            color: #86868b;
+            margin-bottom: 24px;
+        }
+
+        .mini-chart {
+            width: 100%;
+            height: 120px;
+            position: relative;
+        }
+
+        .mini-chart svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Gradient text classes */
+        .gradient-green {
+            background: linear-gradient(90deg, #30d158, #5ac8fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-red {
+            background: linear-gradient(90deg, #ff453a, #ff6961);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Footer */
+        footer {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 24px 22px 48px;
+            border-top: 1px solid #424245;
+            margin-top: 48px;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: #6e6e73;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            margin-top: 12px;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            font-size: 12px;
+            color: #6e6e73;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: #f5f5f7;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .delay-3 { animation-delay: 0.3s; opacity: 0; }
+        .delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+        /* Refresh button */
+        .refresh-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #f5f5f7;
+            font-size: 15px;
+            font-weight: 400;
+            text-decoration: none;
+            border-radius: 980px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 16px;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 44px;
+            }
+
+            .hero-subtitle {
+                font-size: 17px;
+            }
+
+            .index-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .charts {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .stock-row {
+                grid-template-columns: 1.5fr 1fr 1fr;
+                padding: 16px 20px;
+            }
+
+            .stock-row .stock-change-val {
+                display: none;
+            }
+
+            .stock-row.header span:nth-child(3) {
+                display: none;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .index-price {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-content">
+            <a class="nav-logo" href="/stock">EvenStock</a>
+            <ul class="nav-links">
+                <li><a href="/">EvenTime</a></li>
+                <li><a href="/stock" class="active">Market</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <p class="hero-overline animate-in delay-1">Market Overview</p>
+        <h1 class="hero-title animate-in delay-2">EvenStock</h1>
+        <p class="hero-subtitle animate-in delay-3">글로벌 주식 시장의 실시간 현황을 한눈에 확인하세요.</p>
+        <div class="market-status animate-in delay-4">
+            <span class="dot" id="market-dot"></span>
+            <span class="status-text" id="market-status-text">확인 중...</span>
+            <span id="market-time"></span>
+        </div>
+    </section>
+
+    <!-- Major Index Strip -->
+    <div class="index-strip animate-in delay-3">
+        <div class="index-grid">
+            {% for idx in indices %}
+            <div class="index-card">
+                <div class="index-name">{{ idx.name }}</div>
+                <div class="index-price">{{ idx.price }}</div>
+                <div class="index-change {{ idx.direction }}">
+                    <span class="arrow">{{ '▲' if idx.direction == 'up' else '▼' }}</span>
+                    {{ idx.change }} ({{ idx.change_pct }})
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Stock Table -->
+    <div class="section-header">
+        <p class="section-label">종목</p>
+        <h2 class="section-title">주요 종목 현황</h2>
+    </div>
+
+    <div class="stocks">
+        <div class="stock-table">
+            <div class="stock-row header">
+                <span>종목</span>
+                <span style="text-align:right">현재가</span>
+                <span style="text-align:right">등락</span>
+                <span style="text-align:right">등락률</span>
+            </div>
+            {% for stock in stocks %}
+            <div class="stock-row">
+                <div class="stock-info">
+                    <span class="stock-symbol">{{ stock.symbol }}</span>
+                    <span class="stock-name">{{ stock.name }}</span>
+                </div>
+                <div class="stock-price">{{ stock.price }}</div>
+                <div class="stock-change-val {{ stock.direction }}">
+                    {{ '▲' if stock.direction == 'up' else '▼' }} {{ stock.change }}
+                </div>
+                <div class="stock-change-pct">
+                    <span class="stock-badge {{ stock.direction }}">{{ stock.change_pct }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Chart Cards -->
+    <div class="section-header">
+        <p class="section-label">트렌드</p>
+        <h2 class="section-title">시장 흐름</h2>
+    </div>
+
+    <div class="charts">
+        <div class="chart-card">
+            <p class="chart-label">KOSPI</p>
+            <h3 class="chart-title"><span class="gradient-green">{{ indices[0].price if indices|length > 0 else '--' }}</span></h3>
+            <p class="chart-subtitle">한국 종합주가지수</p>
+            <div class="mini-chart">
+                <svg viewBox="0 0 400 120" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="grad-green" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#30d158" stop-opacity="0.3"/>
+                            <stop offset="100%" stop-color="#30d158" stop-opacity="0"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M0,80 Q50,70 100,60 T200,50 T300,40 T400,30 L400,120 L0,120 Z" fill="url(#grad-green)"/>
+                    <path d="M0,80 Q50,70 100,60 T200,50 T300,40 T400,30" fill="none" stroke="#30d158" stroke-width="2"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <p class="chart-label">S&P 500</p>
+            <h3 class="chart-title"><span class="gradient-green">{{ indices[2].price if indices|length > 2 else '--' }}</span></h3>
+            <p class="chart-subtitle">미국 대형주 지수</p>
+            <div class="mini-chart">
+                <svg viewBox="0 0 400 120" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="grad-blue" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#5ac8fa" stop-opacity="0.3"/>
+                            <stop offset="100%" stop-color="#5ac8fa" stop-opacity="0"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M0,90 Q60,60 120,70 T240,40 T360,50 T400,25 L400,120 L0,120 Z" fill="url(#grad-blue)"/>
+                    <path d="M0,90 Q60,60 120,70 T240,40 T360,50 T400,25" fill="none" stroke="#5ac8fa" stroke-width="2"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="chart-card full-width" style="text-align:center; padding: 48px 32px;">
+            <p class="chart-label">안내</p>
+            <h3 class="chart-title">시세 데이터는 <span class="gradient-green">샘플 데이터</span>입니다.</h3>
+            <p class="chart-subtitle" style="max-width:500px; margin:8px auto 24px;">
+                실시간 시세를 위해서는 외부 API 연동이 필요합니다.<br>
+                데이터는 참고용이며 실제 투자 판단에 사용하지 마세요.
+            </p>
+            <button class="refresh-btn" onclick="location.reload()">
+                새로고침
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">
+            EvenStock — Flask 기반 주식 시장 대시보드. 샘플 데이터를 표시합니다.
+        </p>
+        <div class="footer-links">
+            <a href="/">EvenTime</a>
+            <a href="/stock">EvenStock</a>
+            <a href="#">개인정보 처리방침</a>
+            <a href="#">이용 약관</a>
+        </div>
+    </footer>
+
+    <script>
+        // Market status check (KST based)
+        function updateMarketStatus() {
+            const now = new Date();
+            const kst = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+            const hour = kst.getHours();
+            const minute = kst.getMinutes();
+            const day = kst.getDay();
+            const totalMin = hour * 60 + minute;
+
+            const dot = document.getElementById('market-dot');
+            const text = document.getElementById('market-status-text');
+            const time = document.getElementById('market-time');
+
+            const isWeekday = day >= 1 && day <= 5;
+            const isOpen = isWeekday && totalMin >= 540 && totalMin < 930; // 09:00~15:30
+
+            if (isOpen) {
+                dot.className = 'dot open';
+                text.textContent = '장 운영 중';
+                text.style.color = '#30d158';
+            } else {
+                dot.className = 'dot closed';
+                text.textContent = '장 마감';
+                text.style.color = '#ff453a';
+            }
+
+            time.textContent = kst.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false }) + ' KST';
+        }
+
+        updateMarketStatus();
+        setInterval(updateMarketStatus, 60000);
+    </script>
+
+</body>
+</html>
