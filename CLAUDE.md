@@ -8,6 +8,7 @@ This file provides guidance for AI assistants (including Claude) working in this
 - **Description**: Flask 기반 웹 애플리케이션 — 오늘 날짜와 시간을 표시하는 단일 페이지 앱.
 - **Language**: Python
 - **Framework**: Flask
+- **Deployment**: Render (free tier)
 
 ## Project Structure
 
@@ -16,7 +17,8 @@ This file provides guidance for AI assistants (including Claude) working in this
 ├── app.py                 # Flask 애플리케이션 엔트리포인트
 ├── templates/
 │   └── index.html         # 메인 페이지 템플릿 (Jinja2)
-├── requirements.txt       # Python 의존성
+├── requirements.txt       # Python 의존성 (flask, gunicorn)
+├── render.yaml            # Render 배포 설정 (Blueprint)
 ├── CLAUDE.md              # AI 어시스턴트 가이드 (이 파일)
 └── .git/
 ```
@@ -29,11 +31,22 @@ pip install -r requirements.txt
 
 ## Build and Run
 
+로컬 실행:
 ```sh
 python app.py
 ```
+서버가 `http://0.0.0.0:10000` 에서 실행됩니다.
 
-서버가 `http://127.0.0.1:5000` 에서 실행됩니다 (debug 모드 활성화).
+프로덕션 (Render):
+```sh
+gunicorn app:app
+```
+
+## Deployment
+
+Render (https://render.com) 무료 플랜으로 배포합니다.
+- `render.yaml` Blueprint 파일로 서비스가 자동 구성됩니다.
+- GitHub 저장소 연동 시 push마다 자동 배포됩니다.
 
 ## Testing
 
@@ -53,3 +66,4 @@ python app.py
 
 - **app.py**: Flask 앱 인스턴스 생성, 라우트 정의, `datetime.now()`로 현재 시각을 가져와 템플릿에 전달.
 - **templates/index.html**: Jinja2 템플릿. 서버에서 전달받은 `now` 객체를 `strftime`으로 포매팅하여 날짜와 시간 표시.
+- **render.yaml**: Render Blueprint. Python 런타임, 빌드/시작 커맨드, 무료 플랜 설정 정의.
