@@ -44,34 +44,171 @@
             padding: 0 22px;
         }
 
-        .nav-logo {
-            font-size: 18px;
+        /* Hamburger Button */
+        .hamburger {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 6px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            position: relative;
+            z-index: 200;
+        }
+
+        .hamburger:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .hamburger .bar {
+            width: 18px;
+            height: 1.5px;
+            background: #f5f5f7;
+            border-radius: 2px;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .hamburger.open .bar:nth-child(1) {
+            transform: translateY(6.5px) rotate(45deg);
+        }
+
+        .hamburger.open .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.open .bar:nth-child(3) {
+            transform: translateY(-6.5px) rotate(-45deg);
+        }
+
+        .nav-page-title {
+            font-size: 14px;
             font-weight: 600;
             color: #f5f5f7;
-            letter-spacing: -0.02em;
-            text-decoration: none;
+            letter-spacing: -0.01em;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 28px;
+        /* Dropdown Menu */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 90;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .menu-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .dropdown-menu {
+            position: fixed;
+            top: 48px;
+            left: 0;
+            right: 0;
+            z-index: 95;
+            background: rgba(29, 29, 31, 0.96);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(66, 66, 69, 0.6);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .dropdown-menu.open {
+            max-height: 300px;
+        }
+
+        .dropdown-content {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 20px 22px 28px;
+        }
+
+        .dropdown-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #6e6e73;
+            margin-bottom: 16px;
+        }
+
+        .dropdown-links {
             list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        .nav-links a {
-            color: #a1a1a6;
+        .dropdown-links a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            color: #f5f5f7;
             text-decoration: none;
-            font-size: 12px;
+            font-size: 17px;
             font-weight: 400;
-            transition: color 0.3s;
+            border-radius: 12px;
+            transition: background 0.2s;
         }
 
-        .nav-links a:hover {
-            color: #f5f5f7;
+        .dropdown-links a:hover {
+            background: rgba(255, 255, 255, 0.06);
         }
 
-        .nav-links a.active {
-            color: #f5f5f7;
+        .dropdown-links a.active {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .dropdown-links .link-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            color: #fff;
+        }
+
+        .dropdown-links .link-icon.time-icon {
+            background: linear-gradient(135deg, #5e5ce6, #bf5af2);
+        }
+
+        .dropdown-links .link-icon.stock-icon {
+            background: linear-gradient(135deg, #30d158, #5ac8fa);
+        }
+
+        .dropdown-links .link-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .dropdown-links .link-name {
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        .dropdown-links .link-desc {
+            font-size: 12px;
+            color: #86868b;
         }
 
         /* Hero Section */
@@ -416,10 +553,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .nav-links {
-                display: none;
-            }
-
             .cta-group {
                 flex-direction: column;
             }
@@ -431,13 +564,42 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-content">
-            <a class="nav-logo" href="/">Even</a>
-            <ul class="nav-links">
-                <li><a href="/" class="active">EvenTime</a></li>
-                <li><a href="/stock">EvenStock</a></li>
-            </ul>
+            <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <span class="nav-page-title">EvenTime</span>
         </div>
     </nav>
+
+    <!-- Dropdown Menu -->
+    <div class="dropdown-menu" id="dropdown-menu">
+        <div class="dropdown-content">
+            <p class="dropdown-label">Pages</p>
+            <ul class="dropdown-links">
+                <li>
+                    <a href="/" class="active">
+                        <span class="link-icon time-icon">T</span>
+                        <span class="link-info">
+                            <span class="link-name">EvenTime</span>
+                            <span class="link-desc">실시간 시계 & 세계 시각</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/stock">
+                        <span class="link-icon stock-icon">S</span>
+                        <span class="link-info">
+                            <span class="link-name">EvenStock</span>
+                            <span class="link-desc">주식 시장 대시보드</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
 
     <!-- Hero Section -->
     <section class="hero" id="hero">
@@ -524,6 +686,13 @@
     </footer>
 
     <script>
+        // Hamburger menu toggle
+        function toggleMenu() {
+            document.getElementById('hamburger').classList.toggle('open');
+            document.getElementById('dropdown-menu').classList.toggle('open');
+            document.getElementById('menu-overlay').classList.toggle('open');
+        }
+
         // Live clock update
         function updateClock() {
             const now = new Date();
