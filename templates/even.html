@@ -601,6 +601,298 @@
             font-size: 15px;
         }
 
+        /* Quant Simulator */
+        .sim-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 12px 12px;
+        }
+
+        .sim-card {
+            background: #1d1d1f;
+            border-radius: 24px;
+            padding: 36px 32px;
+        }
+
+        .sim-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .sim-card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f5f5f7;
+        }
+
+        .sim-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 980px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .sim-status-badge.idle {
+            background: rgba(142, 142, 147, 0.15);
+            color: #8e8e93;
+        }
+
+        .sim-status-badge.running {
+            background: rgba(48, 209, 88, 0.15);
+            color: #30d158;
+        }
+
+        .sim-status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .sim-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .sim-select-wrap {
+            position: relative;
+        }
+
+        .sim-select {
+            appearance: none;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.06);
+            color: #f5f5f7;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 10px 40px 10px 16px;
+            font-size: 15px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            min-width: 200px;
+        }
+
+        .sim-select:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .sim-select:focus {
+            outline: none;
+            border-color: #ff9f0a;
+        }
+
+        .sim-select option {
+            background: #1d1d1f;
+            color: #f5f5f7;
+        }
+
+        .sim-select-arrow {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #86868b;
+            font-size: 12px;
+        }
+
+        .sim-btn {
+            padding: 10px 24px;
+            border-radius: 980px;
+            font-size: 15px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s, opacity 0.2s;
+        }
+
+        .sim-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .sim-btn.primary {
+            background: #ff9f0a;
+            color: #000;
+        }
+
+        .sim-btn.primary:hover:not(:disabled) {
+            background: #e08f09;
+        }
+
+        .sim-btn.secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #f5f5f7;
+        }
+
+        .sim-btn.secondary:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .sim-desc {
+            margin-top: 16px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .sim-desc-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #f5f5f7;
+            margin-bottom: 4px;
+        }
+
+        .sim-desc-text {
+            font-size: 13px;
+            color: #86868b;
+            line-height: 1.5;
+        }
+
+        /* Portfolio Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .port-card {
+            background: #1d1d1f;
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .port-label {
+            font-size: 12px;
+            color: #86868b;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .port-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #f5f5f7;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .port-value.profit { color: #30d158; }
+        .port-value.loss { color: #ff453a; }
+
+        /* Trade Log */
+        .trade-table {
+            background: #1d1d1f;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .trade-row {
+            display: grid;
+            grid-template-columns: 0.7fr 0.5fr 0.8fr 0.5fr 1fr;
+            align-items: center;
+            padding: 14px 24px;
+            border-bottom: 1px solid rgba(66, 66, 69, 0.4);
+        }
+
+        .trade-row:last-child {
+            border-bottom: none;
+        }
+
+        .trade-row.header {
+            border-bottom: 1px solid #424245;
+        }
+
+        .trade-row.header span {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #6e6e73;
+        }
+
+        .trade-time {
+            font-size: 14px;
+            color: #86868b;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .trade-action {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .trade-action.buy {
+            color: #ff453a;
+        }
+
+        .trade-action.sell {
+            color: #2997ff;
+        }
+
+        .trade-price, .trade-qty, .trade-total {
+            font-size: 14px;
+            font-weight: 500;
+            color: #f5f5f7;
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+        }
+
+        .no-trades {
+            text-align: center;
+            padding: 32px;
+            color: #6e6e73;
+            font-size: 15px;
+        }
+
+        /* Responsive additions */
+        @media (max-width: 768px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .sim-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .sim-select {
+                min-width: unset;
+                width: 100%;
+            }
+
+            .sim-card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .trade-row {
+                grid-template-columns: 0.7fr 0.5fr 0.8fr 1fr;
+                padding: 12px 16px;
+            }
+
+            .trade-row .trade-qty {
+                display: none;
+            }
+
+            .trade-row.header span:nth-child(4) {
+                display: none;
+            }
+        }
+
         /* Footer */
         footer {
             max-width: 1024px;
@@ -832,6 +1124,79 @@
         </div>
     </div>
 
+    <!-- Quant Simulator -->
+    <div class="section-header">
+        <p class="section-label">Quant Simulator</p>
+        <p class="section-title">자동매매 시뮬레이터</p>
+    </div>
+    <div class="sim-section">
+        <div class="sim-card">
+            <div class="sim-card-header">
+                <span class="sim-card-title">전략 설정</span>
+                <span class="sim-status-badge idle" id="sim-status">
+                    <span class="sim-status-dot"></span>
+                    대기 중
+                </span>
+            </div>
+            <div class="sim-controls">
+                <div class="sim-select-wrap">
+                    <select class="sim-select" id="sim-strategy">
+                        <option value="ma">이동평균 교차 (MA Crossover)</option>
+                        <option value="rsi">RSI 역추세</option>
+                        <option value="momentum">모멘텀</option>
+                    </select>
+                    <span class="sim-select-arrow">&#9662;</span>
+                </div>
+                <button class="sim-btn primary" id="sim-start" onclick="startSimulator()">시뮬레이션 시작</button>
+                <button class="sim-btn secondary" id="sim-reset" onclick="resetSimulator()" disabled>초기화</button>
+            </div>
+            <div class="sim-desc" id="sim-desc">
+                <div class="sim-desc-title">이동평균 교차 (MA Crossover)</div>
+                <div class="sim-desc-text">단기(3봉) 이동평균이 장기(7봉) 이동평균을 상향 돌파하면 매수, 하향 돌파하면 매도합니다.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio -->
+    <div class="sim-section" style="margin-top:12px;">
+        <div class="portfolio-grid">
+            <div class="port-card">
+                <div class="port-label">보유 현금</div>
+                <div class="port-value" id="port-cash">1,000,000</div>
+            </div>
+            <div class="port-card">
+                <div class="port-label">보유 주식</div>
+                <div class="port-value" id="port-shares">0주</div>
+            </div>
+            <div class="port-card">
+                <div class="port-label">총 자산</div>
+                <div class="port-value" id="port-total">1,000,000</div>
+            </div>
+            <div class="port-card">
+                <div class="port-label">수익률</div>
+                <div class="port-value" id="port-return">0.00%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trade Log -->
+    <div class="section-header">
+        <p class="section-label">매매 기록</p>
+        <p class="section-title">거래 내역</p>
+    </div>
+    <div class="sim-section">
+        <div class="trade-table" id="trade-table">
+            <div class="trade-row header">
+                <span>시각</span>
+                <span>행동</span>
+                <span style="text-align:right">가격</span>
+                <span style="text-align:right">수량</span>
+                <span style="text-align:right">총자산</span>
+            </div>
+            <div class="no-trades" id="no-trades">시뮬레이션을 시작하면 매매 내역이 표시됩니다.</div>
+        </div>
+    </div>
+
     <!-- History -->
     <div class="section-header">
         <p class="section-label">기록</p>
@@ -877,6 +1242,196 @@
         let changeCount = 0;
         let priceHistory = [INITIAL_PRICE];
         let countdown = 60;
+
+        // Quant Simulator State
+        const INITIAL_CASH = 1000000;
+        let simRunning = false;
+        let simCash = INITIAL_CASH;
+        let simShares = 0;
+        let simPrevShortAboveLong = null; // for MA crossover
+
+        // Strategy descriptions
+        const strategyInfo = {
+            ma: {
+                title: '이동평균 교차 (MA Crossover)',
+                desc: '단기(3봉) 이동평균이 장기(7봉) 이동평균을 상향 돌파하면 매수, 하향 돌파하면 매도합니다.'
+            },
+            rsi: {
+                title: 'RSI 역추세',
+                desc: 'RSI(상대강도지수)가 30 이하면 과매도로 매수, 70 이상이면 과매수로 매도합니다. (기간: 6봉)'
+            },
+            momentum: {
+                title: '모멘텀',
+                desc: '직전 2회 연속 가격 상승이면 매수, 직전 2회 연속 하락이면 매도합니다.'
+            }
+        };
+
+        // Update strategy description on select change
+        document.getElementById('sim-strategy').addEventListener('change', function() {
+            const info = strategyInfo[this.value];
+            document.getElementById('sim-desc').innerHTML =
+                '<div class="sim-desc-title">' + info.title + '</div>' +
+                '<div class="sim-desc-text">' + info.desc + '</div>';
+        });
+
+        function startSimulator() {
+            simRunning = true;
+            simPrevShortAboveLong = null;
+            document.getElementById('sim-start').disabled = true;
+            document.getElementById('sim-reset').disabled = false;
+            document.getElementById('sim-strategy').disabled = true;
+            document.getElementById('sim-status').className = 'sim-status-badge running';
+            document.getElementById('sim-status').innerHTML = '<span class="sim-status-dot"></span>실행 중';
+        }
+
+        function resetSimulator() {
+            simRunning = false;
+            simCash = INITIAL_CASH;
+            simShares = 0;
+            simPrevShortAboveLong = null;
+            document.getElementById('sim-start').disabled = false;
+            document.getElementById('sim-reset').disabled = true;
+            document.getElementById('sim-strategy').disabled = false;
+            document.getElementById('sim-status').className = 'sim-status-badge idle';
+            document.getElementById('sim-status').innerHTML = '<span class="sim-status-dot"></span>대기 중';
+            updatePortfolioUI();
+            // Clear trade log
+            const table = document.getElementById('trade-table');
+            const rows = table.querySelectorAll('.trade-row:not(.header)');
+            rows.forEach(function(r) { r.remove(); });
+            var noTrades = document.getElementById('no-trades');
+            if (!noTrades) {
+                var el = document.createElement('div');
+                el.className = 'no-trades';
+                el.id = 'no-trades';
+                el.textContent = '시뮬레이션을 시작하면 매매 내역이 표시됩니다.';
+                table.appendChild(el);
+            }
+        }
+
+        function updatePortfolioUI() {
+            var totalAsset = simCash + simShares * currentPrice;
+            var returnPct = ((totalAsset - INITIAL_CASH) / INITIAL_CASH) * 100;
+
+            document.getElementById('port-cash').textContent = formatNumber(simCash);
+            document.getElementById('port-shares').textContent = simShares + '주';
+            document.getElementById('port-total').textContent = formatNumber(totalAsset);
+
+            var retEl = document.getElementById('port-return');
+            retEl.textContent = (returnPct >= 0 ? '+' : '') + returnPct.toFixed(2) + '%';
+            retEl.className = 'port-value ' + (returnPct >= 0 ? 'profit' : 'loss');
+        }
+
+        function addTradeRow(action, price, qty) {
+            var noTrades = document.getElementById('no-trades');
+            if (noTrades) noTrades.remove();
+
+            var totalAsset = simCash + simShares * currentPrice;
+            var now = new Date();
+            var table = document.getElementById('trade-table');
+            var header = table.querySelector('.header');
+            var cls = action === '매수' ? 'buy' : 'sell';
+
+            var row = document.createElement('div');
+            row.className = 'trade-row';
+            row.innerHTML =
+                '<span class="trade-time">' + now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) + '</span>' +
+                '<span class="trade-action ' + cls + '">' + action + '</span>' +
+                '<span class="trade-price">' + formatNumber(price) + '</span>' +
+                '<span class="trade-qty">' + qty + '주</span>' +
+                '<span class="trade-total">' + formatNumber(totalAsset) + '</span>';
+
+            header.insertAdjacentElement('afterend', row);
+        }
+
+        // === Strategy Algorithms ===
+
+        function strategyMA() {
+            // Need at least 7 data points
+            if (priceHistory.length < 7) return 'hold';
+
+            var len = priceHistory.length;
+            var shortMA = (priceHistory[len-1] + priceHistory[len-2] + priceHistory[len-3]) / 3;
+            var longMA = 0;
+            for (var i = len - 7; i < len; i++) longMA += priceHistory[i];
+            longMA /= 7;
+
+            var shortAboveLong = shortMA > longMA;
+
+            if (simPrevShortAboveLong === null) {
+                simPrevShortAboveLong = shortAboveLong;
+                return 'hold';
+            }
+
+            var signal = 'hold';
+            if (shortAboveLong && !simPrevShortAboveLong) signal = 'buy';
+            else if (!shortAboveLong && simPrevShortAboveLong) signal = 'sell';
+
+            simPrevShortAboveLong = shortAboveLong;
+            return signal;
+        }
+
+        function strategyRSI() {
+            var period = 6;
+            if (priceHistory.length < period + 1) return 'hold';
+
+            var gains = 0, losses = 0;
+            var len = priceHistory.length;
+            for (var i = len - period; i < len; i++) {
+                var diff = priceHistory[i] - priceHistory[i - 1];
+                if (diff >= 0) gains += diff;
+                else losses += Math.abs(diff);
+            }
+
+            var avgGain = gains / period;
+            var avgLoss = losses / period;
+
+            if (avgLoss === 0) return 'hold';
+
+            var rs = avgGain / avgLoss;
+            var rsi = 100 - (100 / (1 + rs));
+
+            if (rsi <= 30 && simShares === 0) return 'buy';
+            if (rsi >= 70 && simShares > 0) return 'sell';
+            return 'hold';
+        }
+
+        function strategyMomentum() {
+            if (priceHistory.length < 3) return 'hold';
+
+            var len = priceHistory.length;
+            var d1 = priceHistory[len-1] - priceHistory[len-2];
+            var d2 = priceHistory[len-2] - priceHistory[len-3];
+
+            if (d1 > 0 && d2 > 0 && simShares === 0) return 'buy';
+            if (d1 < 0 && d2 < 0 && simShares > 0) return 'sell';
+            return 'hold';
+        }
+
+        function runStrategy() {
+            if (!simRunning) return;
+
+            var strategy = document.getElementById('sim-strategy').value;
+            var signal;
+
+            if (strategy === 'ma') signal = strategyMA();
+            else if (strategy === 'rsi') signal = strategyRSI();
+            else signal = strategyMomentum();
+
+            if (signal === 'buy' && simShares === 0 && simCash > currentPrice) {
+                var qty = Math.floor(simCash / currentPrice);
+                simCash -= qty * currentPrice;
+                simShares = qty;
+                addTradeRow('매수', currentPrice, qty);
+            } else if (signal === 'sell' && simShares > 0) {
+                var qty = simShares;
+                simCash += qty * currentPrice;
+                simShares = 0;
+                addTradeRow('매도', currentPrice, qty);
+            }
+
+            updatePortfolioUI();
+        }
 
         function formatNumber(n) {
             return Math.round(n).toLocaleString('ko-KR');
@@ -934,6 +1489,12 @@
 
             // Update chart
             drawChart();
+
+            // Run quant strategy
+            runStrategy();
+
+            // Update portfolio display (even if no trade, price changed)
+            if (simRunning) updatePortfolioUI();
 
             // Reset countdown
             countdown = 60;
