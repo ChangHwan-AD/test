@@ -508,6 +508,36 @@
             color: #6e6e73;
         }
 
+        .chart-tf-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .chart-tf-btn {
+            padding: 5px 14px;
+            border-radius: 980px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            color: #86868b;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .chart-tf-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #f5f5f7;
+        }
+
+        .chart-tf-btn.active {
+            background: rgba(255, 159, 10, 0.15);
+            color: #ff9f0a;
+            border-color: rgba(255, 159, 10, 0.3);
+        }
+
         .chart-area {
             width: 100%;
             height: 200px;
@@ -1544,6 +1574,12 @@
         <div class="chart-card">
             <div class="chart-header">
                 <span class="chart-title">EVEN</span>
+                <div class="chart-tf-group">
+                    <button class="chart-tf-btn active" onclick="setChartTimeframe(1, this)">1분</button>
+                    <button class="chart-tf-btn" onclick="setChartTimeframe(3, this)">3분</button>
+                    <button class="chart-tf-btn" onclick="setChartTimeframe(5, this)">5틱</button>
+                    <button class="chart-tf-btn" onclick="setChartTimeframe(15, this)">15틱</button>
+                </div>
                 <span class="chart-count" id="chart-count">데이터 대기 중...</span>
             </div>
             <div class="chart-area">
@@ -1853,6 +1889,27 @@
             { label: '30x', value: 30, interval: 2 }
         ];
         let baseInterval = 60; // seconds per tick at current speed
+
+        // Chart Timeframe
+        let chartTimeframe = 1;
+
+        function setChartTimeframe(tf, btnEl) {
+            chartTimeframe = tf;
+            var btns = document.querySelectorAll('.chart-tf-btn');
+            btns.forEach(function(b) { b.classList.remove('active'); });
+            if (btnEl) btnEl.classList.add('active');
+            drawChart();
+        }
+
+        function getChartData() {
+            if (chartTimeframe <= 1) return priceHistory;
+            var result = [];
+            for (var i = 0; i < priceHistory.length; i += chartTimeframe) {
+                var end = Math.min(i + chartTimeframe, priceHistory.length);
+                result.push(priceHistory[end - 1]);
+            }
+            return result;
+        }
 
         // Quant Simulator State
         const INITIAL_CASH = 1000000;
@@ -2746,7 +2803,7 @@
 
         function drawChart() {
             const svg = document.getElementById('chart-svg');
-            const data = priceHistory;
+            const data = getChartData();
             const len = data.length;
 
             if (len < 2) {
@@ -2754,7 +2811,8 @@
                 return;
             }
 
-            document.getElementById('chart-count').textContent = len + '개 데이터';
+            var tfLabel = chartTimeframe <= 1 ? '1분' : chartTimeframe === 3 ? '3분' : chartTimeframe + '틱';
+            document.getElementById('chart-count').textContent = tfLabel + ' · ' + len + '개 데이터';
 
             const min = Math.min(...data) * 0.998;
             const max = Math.max(...data) * 1.002;
