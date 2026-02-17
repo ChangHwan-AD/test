@@ -398,6 +398,85 @@
             min-width: 28px;
         }
 
+        .speed-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .speed-label {
+            font-size: 12px;
+            color: #6e6e73;
+            margin-right: 4px;
+        }
+
+        .speed-btn {
+            padding: 4px 12px;
+            border-radius: 980px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            color: #86868b;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .speed-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #f5f5f7;
+        }
+
+        .speed-btn.active {
+            background: rgba(255, 159, 10, 0.15);
+            color: #ff9f0a;
+            border-color: rgba(255, 159, 10, 0.3);
+        }
+
+        .regime-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .regime-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 12px;
+            border-radius: 980px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+
+        .regime-badge.bull {
+            background: rgba(48, 209, 88, 0.12);
+            color: #30d158;
+        }
+
+        .regime-badge.bear {
+            background: rgba(255, 69, 58, 0.12);
+            color: #ff453a;
+        }
+
+        .regime-badge.range {
+            background: rgba(142, 142, 147, 0.12);
+            color: #8e8e93;
+        }
+
+        .regime-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
         /* Chart */
         .chart-section {
             max-width: 1200px;
@@ -1397,7 +1476,7 @@
     <section class="hero">
         <p class="hero-overline animate-in delay-1">Virtual Stock</p>
         <h1 class="hero-title animate-in delay-2">이븐회사</h1>
-        <p class="hero-subtitle animate-in delay-3">가상의 주식 가격이 1분마다 실시간으로 변동됩니다.</p>
+        <p class="hero-subtitle animate-in delay-3">레짐 기반 시뮬레이션으로 추세추종 전략을 테스트하세요.</p>
         <div class="hero-symbol animate-in delay-3">EVEN &middot; 이븐증권거래소</div>
     </section>
 
@@ -1417,6 +1496,19 @@
                     <div class="countdown-fill" id="countdown-fill" style="width:100%"></div>
                 </div>
                 <span class="countdown-sec" id="countdown-sec">60s</span>
+            </div>
+            <div class="speed-controls">
+                <span class="speed-label">배속</span>
+                <button class="speed-btn active" onclick="setSpeed(1, this)">1x</button>
+                <button class="speed-btn" onclick="setSpeed(5, this)">5x</button>
+                <button class="speed-btn" onclick="setSpeed(10, this)">10x</button>
+                <button class="speed-btn" onclick="setSpeed(30, this)">30x</button>
+            </div>
+            <div class="regime-indicator">
+                <span class="regime-badge range" id="regime-badge">
+                    <span class="regime-dot"></span>
+                    <span id="regime-text">RANGE</span>
+                </span>
             </div>
         </div>
     </div>
@@ -1731,6 +1823,37 @@
         // Volume simulation
         let volumeHistory = [1000000];
 
+        // === Regime-Based Price Model ===
+        const REGIMES = {
+            bull:  { driftMin: 0.003, driftMax: 0.008, volMin: 0.02, volMax: 0.03, durMin: 15, durMax: 40 },
+            bear:  { driftMin: -0.008, driftMax: -0.003, volMin: 0.03, volMax: 0.05, durMin: 10, durMax: 25 },
+            range: { driftMin: -0.001, driftMax: 0.001, volMin: 0.01, volMax: 0.02, durMin: 20, durMax: 50 }
+        };
+        // Transition probabilities: from -> { to: probability }
+        const REGIME_TRANSITIONS = {
+            bull:  { bull: 0.30, range: 0.50, bear: 0.20 },
+            bear:  { bear: 0.25, range: 0.50, bull: 0.25 },
+            range: { range: 0.30, bull: 0.40, bear: 0.30 }
+        };
+        let regime = 'range';
+        let regimeDrift = 0;
+        let regimeBaseVol = 0.015;
+        let regimeTicksLeft = 30;
+        let prevReturn = 0;
+        let currentVolatility = 0.015;
+        const GARCH_ALPHA = 0.15;
+        const GARCH_BETA = 0.75;
+
+        // Speed control
+        let speedMultiplier = 1;
+        const SPEED_OPTIONS = [
+            { label: '1x', value: 1, interval: 60 },
+            { label: '5x', value: 5, interval: 12 },
+            { label: '10x', value: 10, interval: 6 },
+            { label: '30x', value: 30, interval: 2 }
+        ];
+        let baseInterval = 60; // seconds per tick at current speed
+
         // Quant Simulator State
         const INITIAL_CASH = 1000000;
         let simRunning = false;
@@ -1977,6 +2100,141 @@
             if (d1 > 0 && d2 > 0 && simShares === 0) return 'buy';
             if (d1 < 0 && d2 < 0 && simShares > 0) return 'sell';
             return 'hold';
+        }
+
+        // === Regime-Based Price Generation ===
+
+        function randBetween(min, max) {
+            return min + Math.random() * (max - min);
+        }
+
+        function randInt(min, max) {
+            return Math.floor(randBetween(min, max + 1));
+        }
+
+        // Box-Muller transform for normal distribution
+        function randNormal() {
+            var u1 = Math.random();
+            var u2 = Math.random();
+            return Math.sqrt(-2 * Math.log(u1 || 0.0001)) * Math.cos(2 * Math.PI * u2);
+        }
+
+        function initRegime(regimeName) {
+            var r = REGIMES[regimeName];
+            regime = regimeName;
+            regimeDrift = randBetween(r.driftMin, r.driftMax);
+            regimeBaseVol = randBetween(r.volMin, r.volMax);
+            regimeTicksLeft = randInt(r.durMin, r.durMax);
+        }
+
+        function transitionRegime() {
+            var probs = REGIME_TRANSITIONS[regime];
+            var rand = Math.random();
+            var cumulative = 0;
+            for (var next in probs) {
+                cumulative += probs[next];
+                if (rand <= cumulative) {
+                    initRegime(next);
+                    return;
+                }
+            }
+            initRegime('range');
+        }
+
+        function generateNextPrice(price) {
+            // Check regime transition
+            regimeTicksLeft--;
+            if (regimeTicksLeft <= 0) {
+                transitionRegime();
+            }
+
+            // GARCH(1,1) volatility
+            currentVolatility = regimeBaseVol * 0.1 + GARCH_ALPHA * Math.abs(prevReturn) + GARCH_BETA * currentVolatility;
+            // Clamp volatility
+            currentVolatility = Math.max(0.005, Math.min(0.08, currentVolatility));
+
+            // Generate return: drift + volatility * normal random
+            var ret = regimeDrift + currentVolatility * randNormal();
+            prevReturn = ret;
+
+            var newPrice = price * (1 + ret);
+            return Math.max(100, newPrice);
+        }
+
+        function generateVolume(price, prevPrice, prices) {
+            var baseVolume = 1000000;
+
+            // 1) Volatility factor
+            var pctChange = prevPrice > 0 ? Math.abs((price - prevPrice) / prevPrice) : 0;
+            var volFactor = 1 + pctChange * 8;
+
+            // 2) Breakout detection: is price above recent 20-bar high?
+            var breakoutFactor = 1;
+            if (prices.length >= 20) {
+                var recentHigh = 0;
+                for (var i = prices.length - 20; i < prices.length - 1; i++) {
+                    if (prices[i] > recentHigh) recentHigh = prices[i];
+                }
+                if (price > recentHigh) {
+                    breakoutFactor = randBetween(2.0, 3.5);
+                }
+            }
+
+            // 3) Regime transition surge
+            var regimeFactor = regimeTicksLeft >= (REGIMES[regime].durMin - 2) ? randBetween(1.3, 1.8) : 1;
+
+            // 4) Random noise
+            var noiseFactor = randBetween(0.6, 1.4);
+
+            return Math.round(baseVolume * volFactor * breakoutFactor * regimeFactor * noiseFactor);
+        }
+
+        // === Pre-generate 100 bars of history ===
+
+        function generateInitialHistory() {
+            // Start with a random regime
+            var startRegimes = ['bull', 'range', 'bear'];
+            initRegime(startRegimes[randInt(0, 2)]);
+
+            var price = INITIAL_PRICE;
+            priceHistory = [price];
+            volumeHistory = [1000000];
+
+            for (var i = 0; i < 100; i++) {
+                var prevPrice = price;
+                price = generateNextPrice(price);
+                priceHistory.push(price);
+
+                var vol = generateVolume(price, prevPrice, priceHistory);
+                volumeHistory.push(vol);
+            }
+
+            currentPrice = price;
+            highPrice = Math.max.apply(null, priceHistory);
+            lowPrice = Math.min.apply(null, priceHistory);
+            changeCount = 100;
+
+            // Update stats
+            document.getElementById('stat-high').textContent = formatNumber(highPrice);
+            document.getElementById('stat-low').textContent = formatNumber(lowPrice);
+            document.getElementById('stat-count').textContent = changeCount;
+
+            // Update current price display
+            var totalChange = currentPrice - INITIAL_PRICE;
+            var totalPct = (totalChange / INITIAL_PRICE) * 100;
+            var direction = totalChange >= 0 ? 'up' : 'down';
+
+            document.getElementById('price-value').textContent = formatNumber(currentPrice);
+            var changeEl = document.getElementById('price-change');
+            changeEl.textContent = (totalChange >= 0 ? '▲ ' : '▼ ') + formatNumber(Math.abs(totalChange));
+            changeEl.className = 'price-change ' + direction;
+            var pctEl = document.getElementById('price-pct');
+            pctEl.textContent = (totalPct >= 0 ? '+' : '') + totalPct.toFixed(2) + '%';
+            pctEl.className = 'price-pct ' + direction;
+
+            document.getElementById('price-time').textContent = '사전 생성 100봉 데이터 반영';
+
+            drawChart();
         }
 
         // === Helper Functions ===
@@ -2386,10 +2644,8 @@
         function updatePrice() {
             const prevPrice = currentPrice;
 
-            // Random change: -5% ~ +5%
-            const changePct = (Math.random() - 0.5) * 10;
-            const changeAmount = currentPrice * (changePct / 100);
-            currentPrice = Math.max(100, currentPrice + changeAmount);
+            // Regime-based price generation
+            currentPrice = generateNextPrice(currentPrice);
 
             const actualChange = currentPrice - prevPrice;
             const actualPct = (actualChange / prevPrice) * 100;
@@ -2404,11 +2660,8 @@
 
             priceHistory.push(currentPrice);
 
-            // Generate simulated volume (correlated with price change magnitude)
-            var baseVolume = 1000000;
-            var volatilityFactor = 1 + Math.abs(changePct) * 0.3;
-            var randomFactor = 0.6 + Math.random() * 0.8;
-            var newVolume = Math.round(baseVolume * volatilityFactor * randomFactor);
+            // Regime-based volume generation
+            var newVolume = generateVolume(currentPrice, prevPrice, priceHistory);
             volumeHistory.push(newVolume);
 
             // Update DOM
@@ -2466,7 +2719,7 @@
             }
 
             // Reset countdown
-            countdown = 60;
+            countdown = baseInterval;
         }
 
         function addHistoryRow(time, price, change, pct) {
@@ -2539,22 +2792,45 @@
                 '<line x1="0" y1="' + (pad + ((max - INITIAL_PRICE) / range) * (h - pad * 2)).toFixed(1) + '" x2="' + w + '" y2="' + (pad + ((max - INITIAL_PRICE) / range) * (h - pad * 2)).toFixed(1) + '" stroke="#6e6e73" stroke-width="1" stroke-dasharray="4,4"/>';
         }
 
+        // Speed control
+        function setSpeed(multiplier, btnEl) {
+            speedMultiplier = multiplier;
+            baseInterval = Math.round(60 / multiplier);
+            countdown = baseInterval;
+
+            // Update active button
+            var btns = document.querySelectorAll('.speed-btn');
+            btns.forEach(function(b) { b.classList.remove('active'); });
+            if (btnEl) btnEl.classList.add('active');
+        }
+
+        // Update regime badge UI
+        function updateRegimeBadge() {
+            var badge = document.getElementById('regime-badge');
+            var text = document.getElementById('regime-text');
+            badge.className = 'regime-badge ' + regime;
+            var labels = { bull: 'BULL ▲', bear: 'BEAR ▼', range: 'RANGE ─' };
+            text.textContent = labels[regime] || 'RANGE ─';
+        }
+
         // Countdown timer
         function tickCountdown() {
             countdown--;
             if (countdown <= 0) {
                 updatePrice();
+                updateRegimeBadge();
             }
 
             const fill = document.getElementById('countdown-fill');
             const sec = document.getElementById('countdown-sec');
 
-            fill.style.width = ((countdown / 60) * 100) + '%';
+            fill.style.width = ((countdown / baseInterval) * 100) + '%';
             sec.textContent = countdown + 's';
         }
 
-        // Init
-        drawChart();
+        // Init: generate 100 bars of history, then start timer
+        generateInitialHistory();
+        updateRegimeBadge();
         setInterval(tickCountdown, 1000);
     </script>
 
