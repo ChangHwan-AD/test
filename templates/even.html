@@ -925,6 +925,342 @@
             color: #f5f5f7;
         }
 
+        /* Trend Following Parameter Panel */
+        .tf-param-panel {
+            display: none;
+            margin-top: 16px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .tf-param-panel.visible {
+            display: block;
+        }
+
+        .tf-param-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #f5f5f7;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tf-param-title::before {
+            content: '';
+            width: 3px;
+            height: 14px;
+            background: #ff9f0a;
+            border-radius: 2px;
+        }
+
+        .tf-param-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .tf-param-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .tf-param-label {
+            font-size: 12px;
+            color: #86868b;
+            font-weight: 500;
+        }
+
+        .tf-param-input {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px 12px;
+            color: #f5f5f7;
+            font-size: 14px;
+            font-family: inherit;
+            font-variant-numeric: tabular-nums;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        .tf-param-input:focus {
+            outline: none;
+            border-color: #ff9f0a;
+        }
+
+        .tf-param-suffix {
+            font-size: 12px;
+            color: #6e6e73;
+            margin-top: 2px;
+        }
+
+        .tf-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding: 10px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .tf-toggle-label {
+            font-size: 13px;
+            color: #f5f5f7;
+        }
+
+        .tf-toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .tf-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .tf-toggle-track {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #39393d;
+            border-radius: 12px;
+            transition: background 0.3s;
+        }
+
+        .tf-toggle input:checked + .tf-toggle-track {
+            background: #30d158;
+        }
+
+        .tf-toggle-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            pointer-events: none;
+        }
+
+        .tf-toggle input:checked ~ .tf-toggle-thumb {
+            transform: translateX(20px);
+        }
+
+        /* State Machine Indicator */
+        .tf-state-bar {
+            display: none;
+            margin-top: 16px;
+            padding: 16px 20px;
+            background: rgba(255, 159, 10, 0.05);
+            border: 1px solid rgba(255, 159, 10, 0.12);
+            border-radius: 14px;
+        }
+
+        .tf-state-bar.visible {
+            display: block;
+        }
+
+        .tf-state-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #86868b;
+            margin-bottom: 12px;
+        }
+
+        .tf-state-flow {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .tf-state-node {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            background: rgba(255, 255, 255, 0.04);
+            color: #6e6e73;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s;
+        }
+
+        .tf-state-node.active {
+            background: rgba(255, 159, 10, 0.15);
+            color: #ff9f0a;
+            border-color: rgba(255, 159, 10, 0.3);
+        }
+
+        .tf-state-arrow {
+            color: #3a3a3c;
+            font-size: 11px;
+        }
+
+        /* Performance Metrics */
+        .perf-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 12px 12px;
+        }
+
+        .perf-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        .perf-card {
+            background: #1d1d1f;
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .perf-label {
+            font-size: 12px;
+            color: #86868b;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .perf-value {
+            font-size: 22px;
+            font-weight: 600;
+            color: #f5f5f7;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .perf-value.positive { color: #30d158; }
+        .perf-value.negative { color: #ff453a; }
+
+        /* Risk Analysis */
+        .risk-card {
+            background: #1d1d1f;
+            border-radius: 24px;
+            padding: 32px;
+        }
+
+        .risk-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .risk-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f5f5f7;
+        }
+
+        .mc-chart-area {
+            width: 100%;
+            height: 180px;
+            margin-bottom: 20px;
+        }
+
+        .mc-chart-area svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .mc-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .mc-stat {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .mc-stat-label {
+            font-size: 12px;
+            color: #86868b;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .mc-stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f5f5f7;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .mc-notice {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6e6e73;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Consecutive Loss Table */
+        .loss-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .loss-table th, .loss-table td {
+            padding: 10px 16px;
+            font-size: 13px;
+            text-align: center;
+            border-bottom: 1px solid rgba(66, 66, 69, 0.4);
+        }
+
+        .loss-table th {
+            font-weight: 600;
+            color: #86868b;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-size: 11px;
+        }
+
+        .loss-table td {
+            color: #f5f5f7;
+            font-variant-numeric: tabular-nums;
+        }
+
+        @media (max-width: 768px) {
+            .tf-param-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .perf-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .perf-grid .perf-card:last-child {
+                grid-column: span 2;
+            }
+
+            .mc-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tf-state-flow {
+                justify-content: center;
+            }
+        }
+
         /* Animations */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
@@ -1144,6 +1480,7 @@
                         <option value="ma">이동평균 교차 (MA Crossover)</option>
                         <option value="rsi">RSI 역추세</option>
                         <option value="momentum">모멘텀</option>
+                        <option value="trend">추세추종 (Trend Following)</option>
                     </select>
                     <span class="sim-select-arrow">&#9662;</span>
                 </div>
@@ -1153,6 +1490,67 @@
             <div class="sim-desc" id="sim-desc">
                 <div class="sim-desc-title">이동평균 교차 (MA Crossover)</div>
                 <div class="sim-desc-text">단기(3봉) 이동평균이 장기(7봉) 이동평균을 상향 돌파하면 매수, 하향 돌파하면 매도합니다.</div>
+            </div>
+
+            <!-- Trend Following Parameter Panel -->
+            <div class="tf-param-panel" id="tf-param-panel">
+                <div class="tf-param-title">전략 파라미터</div>
+                <div class="tf-param-grid">
+                    <div class="tf-param-group">
+                        <label class="tf-param-label">손절률</label>
+                        <input type="number" class="tf-param-input" id="tf-stop-loss" value="8" min="1" max="50" step="1">
+                        <span class="tf-param-suffix">진입가 대비 -%</span>
+                    </div>
+                    <div class="tf-param-group">
+                        <label class="tf-param-label">익절률</label>
+                        <input type="number" class="tf-param-input" id="tf-take-profit" value="24" min="1" max="100" step="1">
+                        <span class="tf-param-suffix">진입가 대비 +%</span>
+                    </div>
+                    <div class="tf-param-group">
+                        <label class="tf-param-label">거래량 배수</label>
+                        <input type="number" class="tf-param-input" id="tf-vol-mult" value="1.5" min="1.0" max="5.0" step="0.1">
+                        <span class="tf-param-suffix">평균 대비 배수</span>
+                    </div>
+                    <div class="tf-param-group">
+                        <label class="tf-param-label">단기 MA</label>
+                        <input type="number" class="tf-param-input" id="tf-short-ma" value="20" min="3" max="50" step="1">
+                        <span class="tf-param-suffix">봉 수</span>
+                    </div>
+                    <div class="tf-param-group">
+                        <label class="tf-param-label">장기 MA</label>
+                        <input type="number" class="tf-param-input" id="tf-long-ma" value="60" min="10" max="200" step="1">
+                        <span class="tf-param-suffix">봉 수</span>
+                    </div>
+                    <div class="tf-param-group">
+                        <label class="tf-param-label">계좌 리스크</label>
+                        <input type="number" class="tf-param-input" id="tf-risk-pct" value="2" min="0.5" max="10" step="0.5">
+                        <span class="tf-param-suffix">% (포지션 사이징)</span>
+                    </div>
+                </div>
+                <div class="tf-toggle-row">
+                    <span class="tf-toggle-label">트레일링 스탑 (고점 대비 -10%)</span>
+                    <label class="tf-toggle">
+                        <input type="checkbox" id="tf-trailing-stop" checked>
+                        <span class="tf-toggle-track"></span>
+                        <span class="tf-toggle-thumb"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- State Machine Indicator -->
+            <div class="tf-state-bar" id="tf-state-bar">
+                <div class="tf-state-label">전략 상태 머신</div>
+                <div class="tf-state-flow">
+                    <span class="tf-state-node active" id="tf-st-wait">WAIT</span>
+                    <span class="tf-state-arrow">&#9654;</span>
+                    <span class="tf-state-node" id="tf-st-setup">SETUP</span>
+                    <span class="tf-state-arrow">&#9654;</span>
+                    <span class="tf-state-node" id="tf-st-entry">ENTRY</span>
+                    <span class="tf-state-arrow">&#9654;</span>
+                    <span class="tf-state-node" id="tf-st-hold">HOLD</span>
+                    <span class="tf-state-arrow">&#9654;</span>
+                    <span class="tf-state-node" id="tf-st-exit">EXIT</span>
+                </div>
             </div>
         </div>
     </div>
@@ -1175,6 +1573,93 @@
             <div class="port-card">
                 <div class="port-label">수익률</div>
                 <div class="port-value" id="port-return">0.00%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Metrics (Trend Following) -->
+    <div class="section-header" id="perf-section-header" style="display:none;">
+        <p class="section-label">Performance</p>
+        <p class="section-title">전략 성과 분석</p>
+    </div>
+    <div class="perf-section" id="perf-section" style="display:none;">
+        <div class="perf-grid">
+            <div class="perf-card">
+                <div class="perf-label">총 거래 수</div>
+                <div class="perf-value" id="perf-trades">0</div>
+            </div>
+            <div class="perf-card">
+                <div class="perf-label">승률</div>
+                <div class="perf-value" id="perf-winrate">-</div>
+            </div>
+            <div class="perf-card">
+                <div class="perf-label">평균 손익비</div>
+                <div class="perf-value" id="perf-plratio">-</div>
+            </div>
+            <div class="perf-card">
+                <div class="perf-label">기대값 (E)</div>
+                <div class="perf-value" id="perf-ev">-</div>
+            </div>
+            <div class="perf-card">
+                <div class="perf-label">최대 낙폭 (MDD)</div>
+                <div class="perf-value" id="perf-mdd">-</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Risk Analysis (Trend Following) -->
+    <div class="section-header" id="risk-section-header" style="display:none;">
+        <p class="section-label">Risk Analysis</p>
+        <p class="section-title">리스크 분석</p>
+    </div>
+    <div class="sim-section" id="risk-section" style="display:none;">
+        <div class="risk-card">
+            <div class="risk-header">
+                <span class="risk-title">Monte Carlo 시뮬레이션</span>
+                <button class="sim-btn primary" id="mc-run-btn" onclick="runMonteCarlo()">시뮬레이션 실행 (1,000회)</button>
+            </div>
+            <div id="mc-results" style="display:none;">
+                <div class="mc-chart-area">
+                    <svg id="mc-chart-svg" viewBox="0 0 800 180" preserveAspectRatio="none"></svg>
+                </div>
+                <div class="mc-stats-grid">
+                    <div class="mc-stat">
+                        <div class="mc-stat-label">하위 5% (최악)</div>
+                        <div class="mc-stat-value" id="mc-p5">-</div>
+                    </div>
+                    <div class="mc-stat">
+                        <div class="mc-stat-label">중앙값 (50%)</div>
+                        <div class="mc-stat-value" id="mc-p50">-</div>
+                    </div>
+                    <div class="mc-stat">
+                        <div class="mc-stat-label">상위 5% (최선)</div>
+                        <div class="mc-stat-value" id="mc-p95">-</div>
+                    </div>
+                    <div class="mc-stat">
+                        <div class="mc-stat-label">Kelly Criterion</div>
+                        <div class="mc-stat-value" id="mc-kelly">-</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mc-notice" id="mc-notice">
+                최소 3건 이상의 완료된 거래 데이터가 필요합니다.<br>
+                추세추종 전략을 실행하고 거래가 발생한 후 시뮬레이션을 실행하세요.
+            </div>
+
+            <!-- Consecutive Loss Scenario -->
+            <div id="loss-scenario" style="display:none; margin-top:24px;">
+                <div class="tf-param-title">연속 손실 시나리오</div>
+                <table class="loss-table">
+                    <thead>
+                        <tr>
+                            <th>연속 손실</th>
+                            <th>발생 확률</th>
+                            <th>누적 손실</th>
+                            <th>잔여 자본</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loss-table-body"></tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -1243,12 +1728,36 @@
         let priceHistory = [INITIAL_PRICE];
         let countdown = 60;
 
+        // Volume simulation
+        let volumeHistory = [1000000];
+
         // Quant Simulator State
         const INITIAL_CASH = 1000000;
         let simRunning = false;
         let simCash = INITIAL_CASH;
         let simShares = 0;
         let simPrevShortAboveLong = null; // for MA crossover
+
+        // Trend Following State Machine
+        const TF = { WAIT: 'WAIT', SETUP: 'SETUP', ENTRY: 'ENTRY', HOLD: 'HOLD', EXIT: 'EXIT' };
+        let tfState = TF.WAIT;
+        let tfEntryPrice = 0;
+        let tfHighestSinceEntry = 0;
+        let tfPositionSize = 0;
+        let tfParams = {
+            stopLoss: 8,
+            takeProfit: 24,
+            volumeMult: 1.5,
+            shortMAPeriod: 20,
+            longMAPeriod: 60,
+            trailingStop: true,
+            trailingStopPct: 10,
+            riskPct: 2
+        };
+        let tfTrades = [];
+        let tfPeakEquity = INITIAL_CASH;
+        let tfMaxDrawdown = 0;
+        let tfEquityHistory = [INITIAL_CASH];
 
         // Strategy descriptions
         const strategyInfo = {
@@ -1263,6 +1772,10 @@
             momentum: {
                 title: '모멘텀',
                 desc: '직전 2회 연속 가격 상승이면 매수, 직전 2회 연속 하락이면 매도합니다.'
+            },
+            trend: {
+                title: '추세추종 (Trend Following)',
+                desc: '시장 추세 필터(MA20>MA60) → 눌림목 감지 → 돌파 매수 → 손절(-8%)/익절(+24%)/트레일링 스탑. 2% 계좌 리스크 기반 포지션 사이징. 상태머신(WAIT→SETUP→ENTRY→HOLD→EXIT) 구조.'
             }
         };
 
@@ -1272,7 +1785,20 @@
             document.getElementById('sim-desc').innerHTML =
                 '<div class="sim-desc-title">' + info.title + '</div>' +
                 '<div class="sim-desc-text">' + info.desc + '</div>';
+
+            var isTrend = this.value === 'trend';
+            document.getElementById('tf-param-panel').classList.toggle('visible', isTrend);
+            document.getElementById('tf-state-bar').classList.toggle('visible', isTrend);
+            toggleTrendSections(isTrend && simRunning);
         });
+
+        function toggleTrendSections(show) {
+            var display = show ? '' : 'none';
+            document.getElementById('perf-section-header').style.display = display;
+            document.getElementById('perf-section').style.display = display;
+            document.getElementById('risk-section-header').style.display = display;
+            document.getElementById('risk-section').style.display = display;
+        }
 
         function startSimulator() {
             simRunning = true;
@@ -1282,6 +1808,34 @@
             document.getElementById('sim-strategy').disabled = true;
             document.getElementById('sim-status').className = 'sim-status-badge running';
             document.getElementById('sim-status').innerHTML = '<span class="sim-status-dot"></span>실행 중';
+
+            var strategy = document.getElementById('sim-strategy').value;
+            if (strategy === 'trend') {
+                readTfParams();
+                tfState = TF.WAIT;
+                tfEntryPrice = 0;
+                tfHighestSinceEntry = 0;
+                tfPositionSize = 0;
+                tfTrades = [];
+                tfPeakEquity = INITIAL_CASH;
+                tfMaxDrawdown = 0;
+                tfEquityHistory = [INITIAL_CASH];
+                updateStateUI();
+                toggleTrendSections(true);
+                // Disable param inputs during run
+                var inputs = document.querySelectorAll('#tf-param-panel input');
+                inputs.forEach(function(inp) { inp.disabled = true; });
+            }
+        }
+
+        function readTfParams() {
+            tfParams.stopLoss = parseFloat(document.getElementById('tf-stop-loss').value) || 8;
+            tfParams.takeProfit = parseFloat(document.getElementById('tf-take-profit').value) || 24;
+            tfParams.volumeMult = parseFloat(document.getElementById('tf-vol-mult').value) || 1.5;
+            tfParams.shortMAPeriod = parseInt(document.getElementById('tf-short-ma').value) || 20;
+            tfParams.longMAPeriod = parseInt(document.getElementById('tf-long-ma').value) || 60;
+            tfParams.riskPct = parseFloat(document.getElementById('tf-risk-pct').value) || 2;
+            tfParams.trailingStop = document.getElementById('tf-trailing-stop').checked;
         }
 
         function resetSimulator() {
@@ -1307,6 +1861,23 @@
                 el.textContent = '시뮬레이션을 시작하면 매매 내역이 표시됩니다.';
                 table.appendChild(el);
             }
+
+            // Reset trend following state
+            tfState = TF.WAIT;
+            tfEntryPrice = 0;
+            tfHighestSinceEntry = 0;
+            tfPositionSize = 0;
+            tfTrades = [];
+            tfPeakEquity = INITIAL_CASH;
+            tfMaxDrawdown = 0;
+            tfEquityHistory = [INITIAL_CASH];
+            updateStateUI();
+            toggleTrendSections(false);
+            resetPerformanceUI();
+            resetRiskUI();
+            // Re-enable param inputs
+            var inputs = document.querySelectorAll('#tf-param-panel input');
+            inputs.forEach(function(inp) { inp.disabled = false; });
         }
 
         function updatePortfolioUI() {
@@ -1408,6 +1979,366 @@
             return 'hold';
         }
 
+        // === Helper Functions ===
+
+        function calcMA(data, period) {
+            if (data.length < period) return null;
+            var sum = 0;
+            for (var i = data.length - period; i < data.length; i++) sum += data[i];
+            return sum / period;
+        }
+
+        function calcAvgVolume(period) {
+            if (volumeHistory.length < period) return null;
+            var sum = 0;
+            for (var i = volumeHistory.length - period; i < volumeHistory.length; i++) sum += volumeHistory[i];
+            return sum / period;
+        }
+
+        // === Trend Following Strategy ===
+
+        function strategyTrend() {
+            var prices = priceHistory;
+            var volumes = volumeHistory;
+
+            // Need enough data for long MA
+            if (prices.length < tfParams.longMAPeriod) {
+                tfState = TF.WAIT;
+                updateStateUI();
+                return 'hold';
+            }
+
+            var shortMA = calcMA(prices, tfParams.shortMAPeriod);
+            var longMA = calcMA(prices, tfParams.longMAPeriod);
+            var isUptrend = shortMA !== null && longMA !== null && shortMA > longMA;
+            var currentP = prices[prices.length - 1];
+
+            // === HOLD state: manage open position ===
+            if (simShares > 0 && tfEntryPrice > 0) {
+                tfState = TF.HOLD;
+
+                if (currentP > tfHighestSinceEntry) {
+                    tfHighestSinceEntry = currentP;
+                }
+
+                // Stop loss
+                var stopLossPrice = tfEntryPrice * (1 - tfParams.stopLoss / 100);
+                if (currentP <= stopLossPrice) {
+                    recordTfTrade(currentP);
+                    tfState = TF.EXIT;
+                    updateStateUI();
+                    return 'sell';
+                }
+
+                // Take profit
+                var takeProfitPrice = tfEntryPrice * (1 + tfParams.takeProfit / 100);
+                if (currentP >= takeProfitPrice) {
+                    recordTfTrade(currentP);
+                    tfState = TF.EXIT;
+                    updateStateUI();
+                    return 'sell';
+                }
+
+                // Trailing stop
+                if (tfParams.trailingStop) {
+                    var trailPrice = tfHighestSinceEntry * (1 - tfParams.trailingStopPct / 100);
+                    if (currentP <= trailPrice && tfHighestSinceEntry > tfEntryPrice * 1.05) {
+                        recordTfTrade(currentP);
+                        tfState = TF.EXIT;
+                        updateStateUI();
+                        return 'sell';
+                    }
+                }
+
+                // Market turned bearish
+                if (!isUptrend) {
+                    recordTfTrade(currentP);
+                    tfState = TF.EXIT;
+                    updateStateUI();
+                    return 'sell';
+                }
+
+                updateStateUI();
+                return 'hold';
+            }
+
+            // === No position: scan for entry ===
+
+            // WAIT: need uptrend
+            if (!isUptrend) {
+                tfState = TF.WAIT;
+                updateStateUI();
+                return 'hold';
+            }
+
+            // SETUP: uptrend confirmed, look for breakout
+            tfState = TF.SETUP;
+
+            // Find recent high (lookback window, excluding last 2 candles for pullback room)
+            var lookback = Math.min(20, prices.length - 3);
+            var recentHigh = 0;
+            for (var i = Math.max(0, prices.length - lookback - 2); i < prices.length - 2; i++) {
+                if (prices[i] > recentHigh) recentHigh = prices[i];
+            }
+
+            // Check pullback: was price near shortMA recently?
+            var hadPullback = false;
+            var pullbackStart = Math.max(0, prices.length - 5);
+            for (var i = pullbackStart; i < prices.length - 1; i++) {
+                var maSlice = prices.slice(0, i + 1);
+                var maAtI = calcMA(maSlice, Math.min(tfParams.shortMAPeriod, maSlice.length));
+                if (maAtI && Math.abs(prices[i] - maAtI) / maAtI < 0.03) {
+                    hadPullback = true;
+                    break;
+                }
+            }
+
+            // Volume check
+            var avgVol = calcAvgVolume(20);
+            var currentVol = volumes.length > 0 ? volumes[volumes.length - 1] : 0;
+            var volumeSurge = avgVol ? (currentVol > avgVol * tfParams.volumeMult) : false;
+
+            // Breakout: price > recent high + volume surge
+            var breakoutCondition = recentHigh > 0 && currentP > recentHigh && volumeSurge;
+
+            // Relaxed breakout: if no pullback data yet, use simpler condition
+            if (!hadPullback && prices.length < 30) {
+                breakoutCondition = recentHigh > 0 && currentP > recentHigh && volumeSurge;
+            } else {
+                breakoutCondition = breakoutCondition && hadPullback;
+            }
+
+            if (breakoutCondition) {
+                // ENTRY: calculate position size with risk management
+                tfState = TF.ENTRY;
+
+                var totalEquity = simCash + simShares * currentP;
+                var stopDistance = currentP * (tfParams.stopLoss / 100);
+                var riskAmount = totalEquity * (tfParams.riskPct / 100);
+                tfPositionSize = Math.max(1, Math.floor(riskAmount / stopDistance));
+                var maxAffordable = Math.floor(simCash / currentP);
+                tfPositionSize = Math.min(tfPositionSize, maxAffordable);
+
+                if (tfPositionSize > 0) {
+                    tfEntryPrice = currentP;
+                    tfHighestSinceEntry = currentP;
+                    updateStateUI();
+                    return 'buy';
+                }
+            }
+
+            updateStateUI();
+            return 'hold';
+        }
+
+        function recordTfTrade(exitPrice) {
+            if (tfEntryPrice <= 0 || simShares <= 0) return;
+            var pnlPct = ((exitPrice - tfEntryPrice) / tfEntryPrice) * 100;
+            tfTrades.push({
+                entry: tfEntryPrice,
+                exit: exitPrice,
+                pnlPct: pnlPct,
+                qty: simShares,
+                time: new Date()
+            });
+            tfEntryPrice = 0;
+            tfHighestSinceEntry = 0;
+        }
+
+        // === State UI ===
+
+        function updateStateUI() {
+            var nodes = ['wait', 'setup', 'entry', 'hold', 'exit'];
+            var stateMap = { WAIT: 'wait', SETUP: 'setup', ENTRY: 'entry', HOLD: 'hold', EXIT: 'exit' };
+            var active = stateMap[tfState] || 'wait';
+            nodes.forEach(function(n) {
+                var el = document.getElementById('tf-st-' + n);
+                if (el) el.classList.toggle('active', n === active);
+            });
+        }
+
+        // === Performance Tracking ===
+
+        function updatePerformanceUI() {
+            if (tfTrades.length === 0) return;
+
+            var wins = tfTrades.filter(function(t) { return t.pnlPct > 0; });
+            var losses = tfTrades.filter(function(t) { return t.pnlPct <= 0; });
+
+            var winRate = (wins.length / tfTrades.length) * 100;
+            var avgWin = wins.length > 0 ? wins.reduce(function(s, t) { return s + t.pnlPct; }, 0) / wins.length : 0;
+            var avgLoss = losses.length > 0 ? Math.abs(losses.reduce(function(s, t) { return s + t.pnlPct; }, 0) / losses.length) : 0;
+            var plRatio = avgLoss > 0 ? (avgWin / avgLoss) : 0;
+            var expectedValue = (winRate / 100 * avgWin) - ((1 - winRate / 100) * avgLoss);
+
+            // Update equity tracking for MDD
+            var equity = simCash + simShares * currentPrice;
+            tfEquityHistory.push(equity);
+            if (equity > tfPeakEquity) tfPeakEquity = equity;
+            var dd = tfPeakEquity > 0 ? ((tfPeakEquity - equity) / tfPeakEquity) * 100 : 0;
+            if (dd > tfMaxDrawdown) tfMaxDrawdown = dd;
+
+            document.getElementById('perf-trades').textContent = tfTrades.length;
+            var wrEl = document.getElementById('perf-winrate');
+            wrEl.textContent = winRate.toFixed(1) + '%';
+            wrEl.className = 'perf-value ' + (winRate >= 50 ? 'positive' : 'negative');
+
+            document.getElementById('perf-plratio').textContent = plRatio.toFixed(2);
+
+            var evEl = document.getElementById('perf-ev');
+            evEl.textContent = (expectedValue >= 0 ? '+' : '') + expectedValue.toFixed(2) + '%';
+            evEl.className = 'perf-value ' + (expectedValue >= 0 ? 'positive' : 'negative');
+
+            var mddEl = document.getElementById('perf-mdd');
+            mddEl.textContent = tfMaxDrawdown.toFixed(2) + '%';
+            mddEl.className = 'perf-value negative';
+        }
+
+        function resetPerformanceUI() {
+            document.getElementById('perf-trades').textContent = '0';
+            document.getElementById('perf-winrate').textContent = '-';
+            document.getElementById('perf-winrate').className = 'perf-value';
+            document.getElementById('perf-plratio').textContent = '-';
+            document.getElementById('perf-ev').textContent = '-';
+            document.getElementById('perf-ev').className = 'perf-value';
+            document.getElementById('perf-mdd').textContent = '-';
+            document.getElementById('perf-mdd').className = 'perf-value';
+        }
+
+        // === Monte Carlo Simulation ===
+
+        function runMonteCarlo() {
+            if (tfTrades.length < 3) {
+                alert('최소 3건의 완료된 거래 데이터가 필요합니다.');
+                return;
+            }
+
+            var wins = tfTrades.filter(function(t) { return t.pnlPct > 0; });
+            var losses = tfTrades.filter(function(t) { return t.pnlPct <= 0; });
+            var winRate = wins.length / tfTrades.length;
+            var avgWinPct = wins.length > 0 ? wins.reduce(function(s, t) { return s + t.pnlPct; }, 0) / wins.length : 0;
+            var avgLossPct = losses.length > 0 ? losses.reduce(function(s, t) { return s + t.pnlPct; }, 0) / losses.length : 0;
+
+            var iterations = 1000;
+            var tradesPerSim = 100;
+            var startEquity = INITIAL_CASH;
+            var results = [];
+
+            for (var i = 0; i < iterations; i++) {
+                var equity = startEquity;
+                for (var j = 0; j < tradesPerSim; j++) {
+                    var isWin = Math.random() < winRate;
+                    var pctChange = isWin ? avgWinPct : avgLossPct;
+                    // Position sizing: risk 2% of equity per trade
+                    var riskAmt = equity * (tfParams.riskPct / 100);
+                    var stopDist = tfParams.stopLoss / 100;
+                    var posSize = stopDist > 0 ? Math.min(riskAmt / stopDist, equity) : equity * 0.1;
+                    equity += posSize * (pctChange / 100);
+                    if (equity <= 0) { equity = 0; break; }
+                }
+                results.push(equity);
+            }
+
+            results.sort(function(a, b) { return a - b; });
+
+            // Percentiles
+            var p5 = results[Math.floor(iterations * 0.05)];
+            var p50 = results[Math.floor(iterations * 0.50)];
+            var p95 = results[Math.floor(iterations * 0.95)];
+
+            document.getElementById('mc-p5').textContent = formatNumber(p5);
+            document.getElementById('mc-p50').textContent = formatNumber(p50);
+            document.getElementById('mc-p95').textContent = formatNumber(p95);
+
+            // Kelly Criterion: f* = (bp - q) / b
+            var b = avgLossPct !== 0 ? Math.abs(avgWinPct / avgLossPct) : 0;
+            var p = winRate;
+            var q = 1 - winRate;
+            var kelly = b > 0 ? ((b * p - q) / b) * 100 : 0;
+            document.getElementById('mc-kelly').textContent = Math.max(0, kelly).toFixed(1) + '%';
+
+            // Draw histogram
+            drawMonteCarloChart(results);
+
+            // Consecutive loss scenario
+            buildLossScenario(winRate);
+
+            document.getElementById('mc-results').style.display = '';
+            document.getElementById('mc-notice').style.display = 'none';
+            document.getElementById('loss-scenario').style.display = '';
+        }
+
+        function drawMonteCarloChart(results) {
+            var svg = document.getElementById('mc-chart-svg');
+            var w = 800, h = 180;
+            var bins = 25;
+            var min = results[0];
+            var max = results[results.length - 1];
+            var binWidth = (max - min) / bins || 1;
+
+            var histogram = [];
+            for (var k = 0; k < bins; k++) histogram.push(0);
+
+            results.forEach(function(r) {
+                var idx = Math.min(Math.floor((r - min) / binWidth), bins - 1);
+                histogram[idx]++;
+            });
+
+            var maxCount = Math.max.apply(null, histogram);
+            var barW = w / bins;
+            var bars = '';
+
+            for (var i = 0; i < bins; i++) {
+                var barH = maxCount > 0 ? (histogram[i] / maxCount) * (h - 20) : 0;
+                var x = i * barW;
+                var y = h - barH;
+                var midVal = min + (i + 0.5) * binWidth;
+                var color = midVal >= INITIAL_CASH ? '#30d158' : '#ff453a';
+                bars += '<rect x="' + (x + 1) + '" y="' + y + '" width="' + (barW - 2) + '" height="' + barH + '" fill="' + color + '" opacity="0.6" rx="3"/>';
+            }
+
+            // Starting equity reference line
+            if (max > min) {
+                var startX = ((INITIAL_CASH - min) / (max - min)) * w;
+                startX = Math.max(0, Math.min(w, startX));
+                bars += '<line x1="' + startX + '" y1="0" x2="' + startX + '" y2="' + h + '" stroke="#ff9f0a" stroke-width="2" stroke-dasharray="4,4"/>';
+                bars += '<text x="' + (startX + 4) + '" y="14" fill="#ff9f0a" font-size="11" font-weight="600">시작 자본</text>';
+            }
+
+            svg.innerHTML = bars;
+        }
+
+        function buildLossScenario(lossRate) {
+            var tbody = document.getElementById('loss-table-body');
+            tbody.innerHTML = '';
+            var q = 1 - lossRate; // probability of loss per trade
+            var lossPerTrade = tfParams.stopLoss / 100;
+            var riskPerTrade = tfParams.riskPct / 100;
+
+            for (var n = 1; n <= 10; n++) {
+                var prob = Math.pow(q, n) * 100;
+                var cumLoss = 1 - Math.pow(1 - riskPerTrade, n);
+                var remaining = (1 - cumLoss) * 100;
+                var row = '<tr>' +
+                    '<td>' + n + '연패</td>' +
+                    '<td>' + prob.toFixed(2) + '%</td>' +
+                    '<td style="color:#ff453a">-' + (cumLoss * 100).toFixed(2) + '%</td>' +
+                    '<td>' + remaining.toFixed(2) + '%</td>' +
+                    '</tr>';
+                tbody.innerHTML += row;
+            }
+        }
+
+        function resetRiskUI() {
+            document.getElementById('mc-results').style.display = 'none';
+            document.getElementById('mc-notice').style.display = '';
+            document.getElementById('loss-scenario').style.display = 'none';
+            document.getElementById('mc-p5').textContent = '-';
+            document.getElementById('mc-p50').textContent = '-';
+            document.getElementById('mc-p95').textContent = '-';
+            document.getElementById('mc-kelly').textContent = '-';
+        }
+
         function runStrategy() {
             if (!simRunning) return;
 
@@ -1416,18 +2347,33 @@
 
             if (strategy === 'ma') signal = strategyMA();
             else if (strategy === 'rsi') signal = strategyRSI();
+            else if (strategy === 'trend') signal = strategyTrend();
             else signal = strategyMomentum();
 
             if (signal === 'buy' && simShares === 0 && simCash > currentPrice) {
-                var qty = Math.floor(simCash / currentPrice);
+                var qty;
+                if (strategy === 'trend' && tfPositionSize > 0) {
+                    qty = Math.min(tfPositionSize, Math.floor(simCash / currentPrice));
+                } else {
+                    qty = Math.floor(simCash / currentPrice);
+                }
                 simCash -= qty * currentPrice;
                 simShares = qty;
                 addTradeRow('매수', currentPrice, qty);
+                if (strategy === 'trend') {
+                    tfState = TF.HOLD;
+                    updateStateUI();
+                }
             } else if (signal === 'sell' && simShares > 0) {
                 var qty = simShares;
                 simCash += qty * currentPrice;
                 simShares = 0;
                 addTradeRow('매도', currentPrice, qty);
+                if (strategy === 'trend') {
+                    tfState = TF.WAIT;
+                    updateStateUI();
+                    updatePerformanceUI();
+                }
             }
 
             updatePortfolioUI();
@@ -1457,6 +2403,13 @@
             changeCount++;
 
             priceHistory.push(currentPrice);
+
+            // Generate simulated volume (correlated with price change magnitude)
+            var baseVolume = 1000000;
+            var volatilityFactor = 1 + Math.abs(changePct) * 0.3;
+            var randomFactor = 0.6 + Math.random() * 0.8;
+            var newVolume = Math.round(baseVolume * volatilityFactor * randomFactor);
+            volumeHistory.push(newVolume);
 
             // Update DOM
             const priceEl = document.getElementById('price-value');
@@ -1494,7 +2447,23 @@
             runStrategy();
 
             // Update portfolio display (even if no trade, price changed)
-            if (simRunning) updatePortfolioUI();
+            if (simRunning) {
+                updatePortfolioUI();
+                // Track equity for MDD calculation in trend strategy
+                if (document.getElementById('sim-strategy').value === 'trend') {
+                    var equity = simCash + simShares * currentPrice;
+                    tfEquityHistory.push(equity);
+                    if (equity > tfPeakEquity) tfPeakEquity = equity;
+                    var dd = tfPeakEquity > 0 ? ((tfPeakEquity - equity) / tfPeakEquity) * 100 : 0;
+                    if (dd > tfMaxDrawdown) tfMaxDrawdown = dd;
+                    // Update MDD display live
+                    var mddEl = document.getElementById('perf-mdd');
+                    if (mddEl && tfMaxDrawdown > 0) {
+                        mddEl.textContent = tfMaxDrawdown.toFixed(2) + '%';
+                        mddEl.className = 'perf-value negative';
+                    }
+                }
+            }
 
             // Reset countdown
             countdown = 60;
